@@ -1,0 +1,20 @@
+<%- include('../../partials/header') %> 
+
+<%- include('../../partials/adminNav') %> 
+
+<%- include('../../partials/alerts') %> 
+<h5 class="card-title"><%=title%> : <%=book.title%> </h5>
+
+<form action="" method="POST">
+    <div class="form-group">
+        <input type="hidden" id="id" class="form-control" name="id" required='true' value="<%= book._id%>">
+        <button class="btn.btn-primary" type="submit">xóa</button>
+    </div>
+</form>
+
+
+
+
+
+
+<%- include('../../partials/footer') %> 
