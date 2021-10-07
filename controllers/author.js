@@ -1,5 +1,5 @@
 var async = require("async");
-const PER_PAGE = 16;
+const PER_PAGE = 8;
 var Author = require("../models/author");
 var Book = require("../models/book");
 
@@ -66,31 +66,33 @@ exports.findAuthors = async (req, res, next) => {
 };
 
 exports.author_detail = async (req, res, next) => {
-  try {
-    await async.parallel(
-      {
-        author: function (data) {
-          Author.findById(req.params.author_id).exec(data);
-        },
-        authors_books: function (data) {
-          Book.find({ author: req.params.author_id }, "title description").exec(
-            data
-          );
-        },
-      },
-      function (err, data) {
-        if (err) {
-          return next(err);
-        }
-        //Successful, so render
-        res.render("author/author_detail", {
-          title: "Author Detail",
-          author: data.author,
-          author_books: data.authors_books,
-        });
-      }
-    );
-  } catch (err) {
-    res.json({ error, mess: "server error", status: 500 });
+  var page = req.params.page || 1;
+  const filter = req.params.filter;
+  const value = req.params.value;
+  let searchoObj = {};
+  if (filter != "all" && value != "all") {
+    // tìm nạp sách theo giá trị tìm kiếm và bộ lọc
+    searchoObj[filter] = value;
   }
-};
+  // xây dựng đối tượng tìm kiếm
+  try {
+    const author = await Author.findById(req.params.author_id)
+    const author_books = await Book.find({ author: req.params.author_id }, "title summary ImageUrl").skip(PER_PAGE * page - PER_PAGE)
+      
+    .limit(PER_PAGE)
+    const count = await Author.find(searchoObj).countDocuments();
+    res.render("user/authorDetails", {
+      title: "Author Detail",
+      author: author,
+      author_books: author_books,
+      current: page,
+      pages: Math.ceil(count / PER_PAGE),
+      filter: filter,
+      value: value,
+      user: req.user,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.redirect("back");
+  }
+}

@@ -159,7 +159,7 @@ exports.postAdminAuthorInventory = async (req, res, next) => {
     .skip((PER_PAGE * page) - PER_PAGE)
     .limit(PER_PAGE)
 
-    res.render("admin/bookInventory", {
+    res.render("admin/authorInventory", {
       authors: authors,
       current: page,
       pages: Math.ceil(authors_count / PER_PAGE),

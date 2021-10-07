@@ -43,7 +43,7 @@ exports.author_create_get = (req, res) => {
           return next(err);
         }
         //successful - redirect to new author record.
-        res.redirect(author.url);
+        res.redirect("/authors/all/all/1");
       });
     }
   };
@@ -65,10 +65,10 @@ exports.author_create_get = (req, res) => {
         }
         if (data.author == null) {
           // No data.
-          res.redirect("/catalog/authors");
+          res.redirect("/authors/all/all/1");
         }
         //Successful, so render
-        res.render("author/author_delete", {
+        res.render("admin/author/author_delete", {
           title: "Delete Author",
           author: data.author,
           author_books: data.authors_books,
@@ -97,7 +97,7 @@ exports.author_create_get = (req, res) => {
         // Success
         if (data.authors_books.length > 0) {
           // Author has books. Render in same way as for GET route.
-          res.render("author/author_delete", {
+          res.render("admin/author/author_delete", {
             title: "Delete Author",
             author: data.author,
             author_books: data.authors_books,
@@ -110,7 +110,7 @@ exports.author_create_get = (req, res) => {
               return next(err);
             }
             // Success - go to author list
-            res.redirect("/catalog/authors");
+            res.redirect("/authors/all/all/1");
           });
         }
       }

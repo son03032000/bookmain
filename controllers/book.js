@@ -88,6 +88,7 @@ exports.book_detail = async (req, res, next) => {
     res.render("user/bookDetails", {
       title: "Title",
       book: book,
+      user: req.user,
     });
   } catch (err) {
     console.log(err);

@@ -1,0 +1,68 @@
+
+<%- include('../partials/header') %> 
+<!--NAVIGATION BAR FOR USER-->
+<% if(!user.isAdmin) { %>
+  <%- include('../partials/userNav') %> 
+<% } else{ %>
+  <%- include('../partials/adminNav') %> 
+<% }%>
+  
+  
+
+<h4 class="text-center"> Thể loại <%= genre.name%></h4>
+<div style="margin-left:20px;margin-top:20px"></div>
+<h4 style="margin-left:570px;margin-top:20px">Những Cuốn sách thuộc thể loại này</h4>
+<div class="row"> 
+    <% for (let book of genre_books) { %>
+  <div class="card col-md-3 text-center">
+    
+        <div class="card-body">
+            
+          <h5 class="card-title"> <%=book.title%> </h5>
+          <p class="text-muted">
+            <img  src="<%=book.ImageUrl%>" class="img-item">
+          </p>
+          <a href="/books/details/<%=book._id%>" class="btn btn-xs btn-primary">Details</a>
+        </div>
+      </div>
+  <% } %>
+  </div>
+  <% if(user.isAdmin) { %>
+    <a href="/admin/genre/delete/<%=genre._id%>" class="btn btn-sm btn-danger">Delete</a>
+    <% } %>
+  <% if (pages > 0) { %>
+    <nav class="ml-3 mb-2">
+      <ul class="pagination offset-md-3">
+        
+        <% if (current == 1) { %>
+          <li class="page-item disabled"><a class="page-link">First</a></li>
+        <% } else { %>
+          <li class="page-item"><a href="/genres/<%=filter%>/<%=value%>/1" class="page-link">First</a></li>
+        <% } %>
+        
+        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a class="page-link">...</a></li>
+                <% } %>
+                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                        <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="/genres/<%=filter%>/<%=value%>/<%= i %>"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                    <% } %>
+                <% } %>
+                <% if (current == pages) { %>
+                    <li class="page-item disabled"><a class="page-link">Last</a></li>
+                <% } else { %>
+                    <li class="page-item"><a href="/genres/<%=filter%>/<%=value%>/<%= pages %>" class="page-link">Last</a></li>
+                <% } %>
+      </ul>
+    </nav>
+ <% } %>
+
+
+
+<%- include('../partials/footer') %> 

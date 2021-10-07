@@ -46,7 +46,7 @@ exports.genre_create_get = function (req, res, next) {
               return next(err);
             }
             //Genre saved. redirect to genre detail page
-            res.redirect(genre.url);
+            res.redirect("/genres/all/all/1");
           });
         }
       });

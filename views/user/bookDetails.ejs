@@ -1,9 +1,14 @@
 
 <%- include('../partials/header') %> 
 <!--NAVIGATION BAR FOR USER-->
-
-<%- include('../partials/userNav') %> 
-<!--BOOK DETAILS-->
+<% if(user.isAdmin) { %>
+    <%- include('../partials/adminNav') %> 
+<% } else{ %>
+    
+    <%- include('../partials/userNav') %> 
+<% }%>
+<%- include('../partials/userNav') %>
+    
 
 <div class="container mt-3">
     <div class="row justify-content-center">
@@ -26,7 +31,12 @@
                     </p>
                 </div>
             </div>
+            <% if(user.isAdmin) { %>
             
+                <a href="/admin/book/delete/<%=book._id%>" class="btn btn-sm btn-danger">Delete</a>
+    
+                <% } %>
+
             <div class="card my-3 bg-light">
                 <% if(currentUser) { %>
                 <p class="p-3">
@@ -42,14 +52,14 @@
                 </div>
 
             <% } %>
-                
-                
+
             <ul class="list-group list-group-flush">
                 
             <%book.comments.forEach((comment) => { %>
                 <li class="list-group-item">
-                   
+                    <a href="/users/profile/<%=comment.author.id%>" title="Visit profile">
                     <strong><%=comment.author.username%></strong>
+                </a>
                     <span><em> at <%=comment.date.toDateString()%></em></span>
                     <p><%=comment.text%></p>
                     
@@ -80,7 +90,7 @@
     </div>
 </div>
 
-
+<%- include('../partials/alerts') %> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     $('button').on('click',  function() {
