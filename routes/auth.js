@@ -8,9 +8,9 @@ const authController = require('../controllers/auth');
 
 // Import models
 
-
+router.get('/',authController.getHome)
 //landing page
-router.get('/', authController.getLandingPage);
+router.get('/login', authController.getLandingPage);
 
 //admin login handler
 router.get("/auth/admin-login", authController.getAdminLoginPage)

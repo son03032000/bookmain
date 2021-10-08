@@ -55,9 +55,9 @@ router.post('/books/add',upload.single('image'), book_controller.book_create_pos
 router.get('/book/delete/:id',book_controller.book_delete_get);
 
 /* GET request to update Book. */
-router.get('/book/update/:id', book_controller.book_update_get);
+router.get('/book/update/:book_id', book_controller.book_update_get);
 // POST request to update Book
-router.post('/book/update/:id',upload.single('image'), book_controller.book_update_post);
+router.post('/book/update/:book_id',upload.single('image'), book_controller.book_update_post);
 
 
 
@@ -73,9 +73,9 @@ router.get('/author/delete/:id',author_controller.author_delete_get);
 // POST request to delete Author
 router.post('/author/delete/:id', author_controller.author_delete_post);
 /* GET request to update Author. */
-router.get('/author/:id/update', author_controller.author_update_get);
+router.get('/author/update/:author_id', author_controller.author_update_get);
 // POST request to update Author
-router.post('/author/:id/update', author_controller.author_update_post);
+router.post('/author/update/:author_id', author_controller.author_update_post);
 
 
 
@@ -88,13 +88,13 @@ router.get('/genres/add', genre_controller.genre_create_get);
 /* POST request for creating Genre. */
 router.post('/genres/add', genre_controller.genre_create_post);
 /* GET request to delete Genre. */
-router.get('/genre/:id/delete', genre_controller.genre_delete_get);
+router.get('/genre/delete/:id', genre_controller.genre_delete_get);
 // POST request to delete Genre
-router.post('/genre/:id/delete', genre_controller.genre_delete_post);
+router.post('/genre/delete/:id', genre_controller.genre_delete_post);
 /* GET request to update Genre. */
-router.get('/genre/:id/update', genre_controller.genre_update_get);
+router.get('/genre/update/:genre_id', genre_controller.genre_update_get);
 // POST request to update Genre
-router.post('/genre/id/update', genre_controller.genre_update_post);
+router.post('/genre/update/:genre_id', genre_controller.genre_update_post);
 
 
 

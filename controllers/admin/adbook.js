@@ -128,7 +128,7 @@ exports.book_update_get = function (req, res, next) {
   async.parallel(
     {
       book: function (data) {
-        Book.findById(req.params.id)
+        Book.findById(req.params.book_id)
           .populate("author")
           .populate("genre")
           .exec(data);
@@ -198,12 +198,12 @@ exports.book_update_post = [
       summary: req.body.summary,
       ImageUrl: result.secure_url,
       genre: typeof req.body.genre === "undefined" ? [] : req.body.genre,
-      _id: req.params.id, //Điều này là bắt buộc, nếu không ID mới sẽ được chỉ định!
+      _id: req.params.book_id, //Điều này là bắt buộc, nếu không ID mới sẽ được chỉ định!
     });
 
 
       // Dữ liệu từ biểu mẫu là hợp lệ. Cập nhật hồ sơ.
-      Book.findByIdAndUpdate(req.params.id, book, {}, function (err, thebook) {
+      Book.findByIdAndUpdate(req.params.book_id, book, {}, function (err, thebook) {
         if (err) {
           return next(err);
         }

@@ -328,7 +328,7 @@ exports.getDeleteUser = async (req, res, next) => {
     await Comment.deleteMany({ "author.id": user_id });
     await PostRv.deleteMany({ "author.id": user_id });
 
-    res.redirect("/users");
+    res.redirect("/admin/users/1");
   } catch (err) {
     console.log(err);
     res.redirect("back");

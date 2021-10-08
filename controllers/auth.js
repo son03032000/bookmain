@@ -5,7 +5,9 @@ if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 // importing models
 const User = require("../models/user");
-
+exports.getHome = (req, res, next) => {
+  res.render("home");
+};
 exports.getLandingPage = (req, res, next) => {
   res.render("landing");
 };

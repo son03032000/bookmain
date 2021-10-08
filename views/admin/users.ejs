@@ -59,8 +59,6 @@
                 <th>Email</th>
                  <th>Gender</th>
                 <th>Date Regisetered</th>
-                <th>Violation flag</th>
-                <th>Fine</th>
                 <th></th>
               </tr>
             </thead>
@@ -73,9 +71,10 @@
                 <td><a href="/admin/users/profile/<%=user._id%>" title="Visit this user"><%=user.username%></a></td>
                 <td><%=user.email%></td>
                  <td><%=user.gender%></td>
-                <td><%=user.joined.toDateString()%></td>
-
+                <td><%=user.joined.toDateString()%>   
+                  <a href="/admin/users/delete/<%=user._id%>" title="Delete User" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></td>     
               </tr>
+           
             <% }); %>
             </tbody>
           </table>

@@ -119,14 +119,14 @@ exports.author_create_get = (req, res) => {
   
    // Display Author update form on GET
    exports.author_update_get = function (req, res) {
-    Author.findById(req.params.id, function(err, author){
+    Author.findById(req.params.author_id, function(err, author){
       if(err){return next(err)}
       if(author == null) {
         var err = new Error('Author not found');
         err.status = 404;
         return next(err);
       }
-      res.render('author_form', { title: 'Update Author', author: author });
+      res.render('admin/author/author_update', { title: 'Update Author', author: author });
     })
   };
   
@@ -142,30 +142,21 @@ exports.author_create_get = (req, res) => {
   
 
     (req, res, next) => {
-      const errors = validationResult(req);
       var author = new Author(
         {
             first_name: req.body.first_name,
             family_name: req.body.family_name,
             date_of_birth: req.body.date_of_birth,
             date_of_death: req.body.date_of_death,
-            _id: req.params.id
+            _id: req.params.author_id
         }
     );
-  
-    if (!errors.isEmpty()) {
-        // There are errors. Render the form again with sanitized values and error messages.
-        res.render('author_form', { title: 'Update Author', author: author, errors: errors.array() });
-        return;
-    }
-    else {
         // Data from form is valid. Update the record.
-        Author.findByIdAndUpdate(req.params.id, author, {}, function (err, theauthor) {
-            if (err) { return next(err); }
+        Author.findByIdAndUpdate(req.params.author_id, author);
             // Successful - redirect to genre detail page.
-            res.redirect(theauthor.url);
-        });
-    }
+            res.redirect("/authors/all/all/1");
+        
+    
     }
   ]
   
