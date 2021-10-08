@@ -99,26 +99,28 @@
 
 <%- include('./partials/alerts') %> 
 <!--BOOKS-->
-<section id="browse_books" class="mt-5">
+<section id="browse_books" class="mt-5" >
   <div class="container">
     
     <div class="row">
       <% for (let book of books) { %>
-    <div class="card col-md-3 text-center">
+    <div class="card col-md-3 text-center" style="background-color: #FFFFCF;">
       
-          <div class="card-body">
-            <h5 class="card-title"> <%=book.title%> </h5>
+          <div class="card-body" style="background-color: #FFFFCF;">
             <p class="text-muted">
-              <a href="/authors/details/<%=book.author._id%>" class="btn btn-xs btn-primary"> Author : <%= book.author.name%></a>
-              
+            <a href="/books/details/<%=book._id%>" style="color: black; font-size: 20px;"><%=book.title%></a>
+          </p>
+
+            <p class="text-muted">
+              <a href="/authors/details/<%=book.author._id%>" class="" style="color: black; font: 15px"> Tác giả : <%= book.author.name%></a>
+               
             </p>
             <p class="text-muted">
-              <a href="/genres/details/<%=book.genre[0]._id%>" class="btn btn-xs btn-primary"> genre : <%=book.genre[0].name%></a>
+              <a href="/genres/details/<%=book.genre[0]._id%>" class=""style="color: black;font: 15px "> Thể loại : <%=book.genre[0].name%></a>
             </p>
             <p class="text-muted">
               <img  src="<%=book.ImageUrl%>" class="img-item">
             </p>
-            <a href="/books/details/<%=book._id%>" class="btn btn-xs btn-primary">Details</a>
           </div>
         </div>
     <% } %>
