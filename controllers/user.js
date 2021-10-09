@@ -4,7 +4,6 @@ const uid = require("uid");
 const Comment = require("../models/comment");
 const Book = require("../models/book");
 const User = require("../models/user");
-const PostRV = require("../models/postrv");
 const Activity = require("../models/activity");
 var async = require("async");
 
@@ -151,7 +150,7 @@ exports.deleteUserAccount = async (req, res, next) => {
       deleteImage(imagePath);
     }
     await Comment.deleteMany({ "author.id": user_id });
-    await PostRV.deleteMany({ "author.id": user_id });
+
 
     res.redirect("/");
   } catch (err) {
@@ -165,14 +164,12 @@ exports.getUserProfile1 = async (req, res, next) => {
 
     const user = await User.findById(user_id);
     const comments = await Comment.find({ "author.id": user_id });
-    const postrvs = await PostRV.find({ "author.id": user_id });
     const activities = await Activity.find({"user_id.id":user_id}).sort('-entryTime')
 
     res.render("user/user", {
       user: user,
       comments: comments,
       activities:activities,
-      postrvs: postrvs,
     });
   } catch (err) {
     console.log(err);

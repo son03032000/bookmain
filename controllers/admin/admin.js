@@ -3,7 +3,6 @@ var Author = require("../../models/author");
 var Genre = require("../../models/genre");
 const fs = require("fs");
 const Comment = require("../../models/comment");
-const PostRv = require("../../models/postrv");
 const deleteImage = require("../../utils/delete_image");
 const UserModel = require("../../models/user");
 const Activity = require("../../models/activity");
@@ -288,7 +287,6 @@ exports.getUserProfile = async (req, res, next) => {
 
     const user = await UserModel.findById(user_id);
     const comments = await Comment.find({ "author.id": user_id });
-    const postRvs = await PostRv.find({ "author.id": user_id });
     const activities = await Activity.find({ "user_id.id": user_id }).sort(
       "-entryTime"
     );
@@ -316,7 +314,6 @@ exports.getDeleteUser = async (req, res, next) => {
     }
 
     await Comment.deleteMany({ "author.id": user_id });
-    await PostRv.deleteMany({ "author.id": user_id });
 
     res.redirect("/admin/users/1");
   } catch (err) {
