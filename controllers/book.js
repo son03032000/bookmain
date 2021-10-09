@@ -83,7 +83,7 @@ exports.book_detail = async (req, res, next) => {
       .populate("comments")
       .populate("author")
       .populate("genre")
-      .populate("postRv");
+      .populate("postrv");
     //Successful, so render
     res.render("user/bookDetails", {
       title: "Title",

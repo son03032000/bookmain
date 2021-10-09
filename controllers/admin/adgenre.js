@@ -130,7 +130,10 @@ exports.genre_update_get = function (req, res) {
       return next(err);
     }
     // Success.
-    res.render('admin/genre/genre_update', { title: "Update Genre", genre: genre });
+    res.render("admin/genre/genre_update", {
+      title: "Update Genre",
+      genre: genre,
+    });
   });
 };
 
@@ -152,7 +155,7 @@ exports.genre_update_post = [
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values and error messages.
-      res.render('admin/genre/genre_update', {
+      res.render("admin/genre/genre_update", {
         title: "Update Genre",
         genre: genre,
         errors: errors.array(),
@@ -169,7 +172,7 @@ exports.genre_update_post = [
             return next(err);
           }
           // Successful - redirect to genre detail page.
-          res.redirect("/genres/all/all/1");
+          res.redirect("/admin/genreInventory/all/all/1");
         }
       );
     }

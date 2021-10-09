@@ -11,7 +11,7 @@ var BookSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Comment"
   }],
-  postRv: [{
+  postrv: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "PostRV"
   }]

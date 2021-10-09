@@ -4,7 +4,7 @@ const uid = require("uid");
 const Comment = require("../models/comment");
 const Book = require("../models/book");
 const User = require("../models/user");
-const PostRV = require("../models/PostRv");
+const PostRV = require("../models/postrv");
 const Activity = require("../models/activity");
 var async = require("async");
 
@@ -165,14 +165,14 @@ exports.getUserProfile1 = async (req, res, next) => {
 
     const user = await User.findById(user_id);
     const comments = await Comment.find({ "author.id": user_id });
-    const postRvs = await PostRV.find({ "author.id": user_id });
+    const postrvs = await PostRV.find({ "author.id": user_id });
     const activities = await Activity.find({"user_id.id":user_id}).sort('-entryTime')
 
     res.render("user/user", {
       user: user,
       comments: comments,
       activities:activities,
-      postRvs: postRvs,
+      postrvs: postrvs,
     });
   } catch (err) {
     console.log(err);
@@ -295,236 +295,6 @@ exports.deleteComment = async (req, res, next) => {
 
     // redirecting
     res.redirect("/books/details/" + book_id);
-  } catch (err) {
-    console.log(err);
-    return res.redirect("back");
-  }
-};
-
-exports.getNewPost = (req, res) => {
-  Book.find({}, "title").exec(function (err, books) {
-    if (err) {
-      return next(err);
-    }
-    //Successful, so render
-    res.render("user/postRV/postRV_form", {
-      title: "Create postRV",
-      book_list: books,
-    });
-  });
-};
-
-exports.postNewPost = async (req, res, next) => {
-  req.checkBody("book", "Book must be specified").notEmpty();
-  req.checkBody("text", "Imprint must be specified").notEmpty();
-  req
-    .checkBody("due_back", "Invalid date")
-    .optional({ checkFalsy: true })
-    .notEmpty();
-
-  req.sanitize("book").escape();
-  req.sanitize("text").escape();
-  req.sanitize("status").escape();
-  req.sanitize("book").trim();
-  req.sanitize("text").trim();
-  req.sanitize("status").trim();
-  req.sanitize("due_back").toDate();
-
-  try {
-    const user_id = req.user._id;
-    const username = req.body.username;
-
-    // tìm nạp sách được nhận xét bằng id
-    const book_id = req.params.book_id;
-    const book = await Book.findById(book_id);
-
-    const postrv = new PostRV({
-      author: {
-        id: user_id,
-        username: username,
-      },
-      book: {
-        id: book._id,
-        title: book.title,
-      },
-      text: req.body.text,
-      status: req.body.status,
-      due_back: req.body.due_back,
-    });
-
-    var errors = req.validationErrors();
-    if (errors) {
-      Book.find({}, "title").exec(function (err, books) {
-        if (err) {
-          return next(err);
-        }
-        //Successful, so render
-        res.render("user/postRV/postRV_form", {
-          title: "Create Postrv",
-          errors: errors,
-          postrv: postrv,
-        });
-      });
-      return;
-    } else {
-      //Data from form is valid
-      await postrv.save();
-      book.postRv.push(postrv._id);
-      await book.save();
-      const activity = new Activity({
-        info: {
-          id: book._id,
-          title: book.title,
-        },
-        categogy: "Post Review",
-        user_id: {
-          id: user_id,
-          username: username,
-        },
-      });
-      await activity.save();
-      res.redirect("/book/details/" + book_id);
-    }
-  } catch (err) {
-    console.log(err);
-    return res.redirect("back");
-  }
-};
-
-exports.getUpdatePost = (req, res, next) => {
-  // Get book, authors and genres for form.
-  async.parallel(
-    {
-      PostRV: function (callback) {
-        PostRV.findById(req.params.id).populate("book").exec(callback);
-      },
-      books: function (callback) {
-        Book.find(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results.PostRV == null) {
-        // No results.
-        var err = new Error("Book copy not found");
-        err.status = 404;
-        return next(err);
-      }
-      // Success.
-      res.render("user/postRV/postRV_form", {
-        title: "Update  postRV",
-        errors: errors,
-        postrv: postrv,
-      });
-    }
-  );
-};
-exports.postUpdatePost = async (req, res, next) => {
-  req.checkBody("book", "Book must be specified").notEmpty();
-  req.checkBody("text", "Imprint must be specified").notEmpty();
-  req
-    .checkBody("due_back", "Invalid date")
-    .optional({ checkFalsy: true })
-    .notEmpty();
-
-  req.sanitize("book").escape();
-  req.sanitize("text").escape();
-  req.sanitize("status").escape();
-  req.sanitize("book").trim();
-  req.sanitize("text").trim();
-  req.sanitize("status").trim();
-  req.sanitize("due_back").toDate();
-
-  try {
-    const user_id = req.user._id;
-    const username = req.body.username;
-
-    // tìm nạp sách được nhận xét bằng id
-    const book_id = req.params.book_id;
-    const book = await Book.findById(book_id);
-
-    const postrv = new PostRV({
-      author: {
-        id: user_id,
-        username: username,
-      },
-      book: {
-        id: book._id,
-        title: book.title,
-      },
-      text: req.body.text,
-      status: req.body.status,
-      due_back: req.body.due_back,
-    });
-
-    var errors = req.validationErrors();
-    if (errors) {
-      Book.find({}, "title").exec(function (err, books) {
-        if (err) {
-          return next(err);
-        }
-        //Successful, so render
-        res.render("user/postRV/postRV_form", {
-          title: "Create Postrv",
-          errors: errors,
-          postrv: postrv,
-        });
-      });
-      return;
-    } else {
-      //Data from form is valid
-      await postrv.findByIdAndUpdate(req.params.id, req.body.postRv);
-      const book = await Book.findById(req.params.book_id);
-      const activity = new Activity({
-        info: {
-          id: book._id,
-          title: book.title,
-        },
-        categogy: "Update Post Review",
-        user_id: {
-          id: user_id,
-          username: username,
-        },
-      });
-      await activity.save();
-
-      res.redirect("/book/details/" + book_id);
-    }
-  } catch (err) {
-    console.log(err);
-    return res.redirect("back");
-  }
-};
-
-exports.deletePost = async (req, res, next) => {
-  const book_id = req.params.book_id;
-  const postrv_id = req.params.postrv_id;
-  const user_id = req.user._id;
-  const username = req.user.username;
-
-  try {
-    const book = await Book.findById(book_id);
-
-    const pos = book.postRv.indexof(postrv_id);
-    book.postRv.splice(pos, 1);
-    await book.save;
-
-    await postRv.findByIdAndRemove(postrv_id);
-    const activity = new Activity({
-      info: {
-        id: book._id,
-        title: book.title,
-      },
-      categogy: "Delete Post Review",
-      user_id: {
-        id: user_id,
-        username: username,
-      },
-    });
-    await activity.save();
-    res.redirect("/book/details/" + book_id);
   } catch (err) {
     console.log(err);
     return res.redirect("back");

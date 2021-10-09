@@ -36,77 +36,77 @@ exports.book_create_get = function (req, res, next) {
   );
 };
 
- exports.book_create_post = async (req, res, next) => {
-try {
-  req.checkBody("title", "Title must not be empty.").notEmpty(); //Tiêu đề không được để trống.
-  req.checkBody("author", "Author must not be empty").notEmpty();
-  req.checkBody("summary", "Summary must not be empty").notEmpty();
-  
-  const result = await cloudinary.v2.uploader.upload(req.file.path);
-  var book = new Book({
-    title: req.body.title,
-    author: req.body.author,
-    summary: req.body.summary,
-    ImageUrl: result.secure_url,
-    genre:
-      typeof req.body.genre === "undefined" ? [] : req.body.genre.split(","),
-  });
+exports.book_create_post = async (req, res, next) => {
+  try {
+    req.checkBody("title", "Title must not be empty.").notEmpty(); //Tiêu đề không được để trống.
+    req.checkBody("author", "Author must not be empty").notEmpty();
+    req.checkBody("summary", "Summary must not be empty").notEmpty();
 
-  console.log("BOOK: " + book);
+    const result = await cloudinary.v2.uploader.upload(req.file.path);
+    var book = new Book({
+      title: req.body.title,
+      author: req.body.author,
+      summary: req.body.summary,
+      ImageUrl: result.secure_url,
+      genre:
+        typeof req.body.genre === "undefined" ? [] : req.body.genre.split(","),
+    });
 
-  var errors = req.validationErrors();
-  if (errors) {
-    //Một số vấn đề nên chúng tôi cần re-render our books
+    console.log("BOOK: " + book);
 
-    // Nhận tất cả các tác giả và thể loại cho biểu mẫu
-    async.parallel(
-      {
-        authors: function (data) {
-          Author.find(data);
+    var errors = req.validationErrors();
+    if (errors) {
+      //Một số vấn đề nên chúng tôi cần re-render our books
+
+      // Nhận tất cả các tác giả và thể loại cho biểu mẫu
+      async.parallel(
+        {
+          authors: function (data) {
+            Author.find(data);
+          },
+          genres: function (data) {
+            Genre.find(data);
+          },
         },
-        genres: function (data) {
-          Genre.find(data);
-        },
-      },
-      function (err, data) {
+        function (err, data) {
+          if (err) {
+            return next(err);
+          }
+
+          //Đánh dấu các thể loại đã chọn của chúng tôi là đã chọn
+          for (i = 0; i < data.genres.length; i++) {
+            if (book.genre.indexOf(data.genres[i]._id) > -1) {
+              //Thể loại hiện tại được chọn. Đặt cờ "đã kiểm tra".
+              data.genres[i].checked = "true";
+            }
+          }
+
+          res.render("admin/book/book_form", {
+            title: "Create Book",
+            authors: data.authors,
+            genres: data.genres,
+            book: book,
+            errors: errors,
+          });
+        }
+      );
+    } else {
+      // Dữ liệu từ biểu mẫu là hợp lệ.
+      // Chúng ta có thể kiểm tra xem sách đã tồn tại chưa, nhưng hãy cứ lưu lại.
+
+      book.save(function (err) {
         if (err) {
           return next(err);
         }
-
-        //Đánh dấu các thể loại đã chọn của chúng tôi là đã chọn
-        for (i = 0; i < data.genres.length; i++) {
-          if (book.genre.indexOf(data.genres[i]._id) > -1) {
-            //Thể loại hiện tại được chọn. Đặt cờ "đã kiểm tra".
-            data.genres[i].checked = "true";
-          }
-        }
-
-        res.render("admin/book/book_form", {
-          title: "Create Book",
-          authors: data.authors,
-          genres: data.genres,
-          book: book,
-          errors: errors,
-        });
-      }
-    );
-  } else {
-    // Dữ liệu từ biểu mẫu là hợp lệ.
-    // Chúng ta có thể kiểm tra xem sách đã tồn tại chưa, nhưng hãy cứ lưu lại.
-
-    book.save(function (err) {
-      if (err) {
-        return next(err);
-      }
-      //Successful - redirect to new book record.
-      res.redirect("/admin/bookInventory/all/all/1");
-    });
+        //Successful - redirect to new book record.
+        res.redirect("/admin/bookInventory/all/all/1");
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("back");
   }
-} catch (err) {
-  console.log(err);
-  res.redirect("back");
-}
-  };
+};
 
 // Hiển thị biểu mẫu xóa sách trên GET
 exports.book_delete_get = async (req, res, next) => {
@@ -189,7 +189,7 @@ exports.book_update_post = [
 
   async (req, res, next) => {
     // Trích xuất các lỗi xác thực từ một yêu cầu
-   
+
     const result = await cloudinary.v2.uploader.upload(req.file.path);
     // Tạo đối tượng Sách với dữ liệu thoát / cắt và id cũ.
     var book = new Book({
@@ -201,14 +201,18 @@ exports.book_update_post = [
       _id: req.params.book_id, //Điều này là bắt buộc, nếu không ID mới sẽ được chỉ định!
     });
 
-
-      // Dữ liệu từ biểu mẫu là hợp lệ. Cập nhật hồ sơ.
-      Book.findByIdAndUpdate(req.params.book_id, book, {}, function (err, thebook) {
+    // Dữ liệu từ biểu mẫu là hợp lệ. Cập nhật hồ sơ.
+    Book.findByIdAndUpdate(
+      req.params.book_id,
+      book,
+      {},
+      function (err, thebook) {
         if (err) {
           return next(err);
         }
         // Thành công - chuyển hướng đến trang chi tiết sách.
         res.redirect("/admin/bookInventory/all/all/1");
-      });
-    }
+      }
+    );
+  },
 ];

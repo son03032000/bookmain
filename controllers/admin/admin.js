@@ -3,69 +3,63 @@ var Author = require("../../models/author");
 var Genre = require("../../models/genre");
 const fs = require("fs");
 const Comment = require("../../models/comment");
-const PostRv = require("../../models/PostRv");
+const PostRv = require("../../models/postrv");
 const deleteImage = require("../../utils/delete_image");
 const UserModel = require("../../models/user");
-const Activity = require("../../models/activity")
-
-
+const Activity = require("../../models/activity");
 
 const PER_PAGE = 10;
 // Setup Cloudinary
 
-
-
-exports.getDashboard = async(req, res, next) => {
+exports.getDashboard = async (req, res, next) => {
   var page = req.query.page || 1;
   try {
-    const users_count = await UserModel.find().countDocuments() - 1;
-    const books_count = await Book.find().countDocuments()
-    const authors_count = await Author.find().countDocuments()
-    const genres_count = await Genre.find().countDocuments()
-    const activity_count = await Activity.find().countDocuments()
+    const users_count = (await UserModel.find().countDocuments()) - 1;
+    const books_count = await Book.find().countDocuments();
+    const authors_count = await Author.find().countDocuments();
+    const genres_count = await Genre.find().countDocuments();
+    const activity_count = await Activity.find().countDocuments();
 
-    const activities = await Activity
-    .find()
-    .sort('-entryTime')
-    .skip((PER_PAGE * page) - PER_PAGE)
-    .limit(PER_PAGE)
+    const activities = await Activity.find()
+      .sort("-entryTime")
+      .skip(PER_PAGE * page - PER_PAGE)
+      .limit(PER_PAGE);
 
     res.render("admin/index", {
-      users_count:users_count,
+      users_count: users_count,
       books_count,
       authors_count,
       genres_count,
       activities,
       current: page,
-      pages: Math.ceil(activity_count/ PER_PAGE),
-    })
+      pages: Math.ceil(activity_count / PER_PAGE),
+    });
   } catch (err) {
     console.log(err);
   }
-}
-
-
+};
 
 exports.getAdminBookInventory = async (req, res, next) => {
   try {
     let page = req.params.page || 1;
-    const filter = req.params.filter
-    const value = req.params.value
+    const filter = req.params.filter;
+    const value = req.params.value;
 
     let searchObj = {};
-    if(filter !== 'all' && value !== 'all') {
+    if (filter !== "all" && value !== "all") {
       searchObj[filter] = value;
     }
 
-    const books_count = await Book.find(searchObj).countDocuments().populate("author")
-    .populate("genre")
+    const books_count = await Book.find(searchObj)
+      .countDocuments()
+      .populate("author")
+      .populate("genre");
 
-    const books = await Book
-    .find(searchObj)
-    .skip((PER_PAGE * page) - PER_PAGE)
-    .limit(PER_PAGE)
-    .populate("author")
-    .populate("genre")
+    const books = await Book.find(searchObj)
+      .skip(PER_PAGE * page - PER_PAGE)
+      .limit(PER_PAGE)
+      .populate("author")
+      .populate("genre");
 
     res.render("admin/bookInventory", {
       books: books,
@@ -73,30 +67,29 @@ exports.getAdminBookInventory = async (req, res, next) => {
       pages: Math.ceil(books_count / PER_PAGE),
       filter: filter,
       value: value,
-    })
+    });
   } catch (err) {
     console.log(err);
-    return res.redirect('back')
+    return res.redirect("back");
   }
-}
+};
 exports.postAdminBookInventory = async (req, res, next) => {
   try {
     let page = req.params.page || 1;
-    const filter = req.body.filter.toLowerCase()
+    const filter = req.body.filter.toLowerCase();
     const value = req.body.searchName;
 
-    if(value == ""){
-      return res.redirect('back');
+    if (value == "") {
+      return res.redirect("back");
     }
-    const searchObj = {}
+    const searchObj = {};
     searchObj[filter] = value;
 
     const books_count = await Book.find(searchObj).countDocuments();
 
-    const books = await Book
-    .find(searchObj)
-    .skip((PER_PAGE * page) - PER_PAGE)
-    .limit(PER_PAGE)
+    const books = await Book.find(searchObj)
+      .skip(PER_PAGE * page - PER_PAGE)
+      .limit(PER_PAGE);
 
     res.render("admin/bookInventory", {
       books: books,
@@ -104,29 +97,28 @@ exports.postAdminBookInventory = async (req, res, next) => {
       pages: Math.ceil(books_count / PER_PAGE),
       filter: filter,
       value: value,
-    })
+    });
   } catch (err) {
     console.log(err);
-    return res.redirect('back')
+    return res.redirect("back");
   }
-}
+};
 exports.getAdminAuthorInventory = async (req, res, next) => {
   try {
     let page = req.params.page || 1;
-    const filter = req.params.filter
-    const value = req.params.value
+    const filter = req.params.filter;
+    const value = req.params.value;
 
     let searchObj = {};
-    if(filter !== 'all' && value !== 'all') {
+    if (filter !== "all" && value !== "all") {
       searchObj[filter] = value;
     }
 
-    const authors_count = await Author.find(searchObj).countDocuments()
+    const authors_count = await Author.find(searchObj).countDocuments();
 
-    const authors = await Author
-    .find(searchObj)
-    .skip((PER_PAGE * page) - PER_PAGE)
-    .limit(PER_PAGE)
+    const authors = await Author.find(searchObj)
+      .skip(PER_PAGE * page - PER_PAGE)
+      .limit(PER_PAGE);
 
     res.render("admin/authorInventory", {
       authors: authors,
@@ -134,30 +126,29 @@ exports.getAdminAuthorInventory = async (req, res, next) => {
       pages: Math.ceil(authors_count / PER_PAGE),
       filter: filter,
       value: value,
-    })
+    });
   } catch (err) {
     console.log(err);
-    return res.redirect('back')
+    return res.redirect("back");
   }
-}
+};
 exports.postAdminAuthorInventory = async (req, res, next) => {
   try {
     let page = req.params.page || 1;
-    const filter = req.body.filter.toLowerCase()
+    const filter = req.body.filter.toLowerCase();
     const value = req.body.searchName;
 
-    if(value == ""){
-      return res.redirect('back');
+    if (value == "") {
+      return res.redirect("back");
     }
-    const searchObj = {}
+    const searchObj = {};
     searchObj[filter] = value;
 
     const authors_count = await Author.find(searchObj).countDocuments();
 
-    const authors = await Author
-    .find(searchObj)
-    .skip((PER_PAGE * page) - PER_PAGE)
-    .limit(PER_PAGE)
+    const authors = await Author.find(searchObj)
+      .skip(PER_PAGE * page - PER_PAGE)
+      .limit(PER_PAGE);
 
     res.render("admin/authorInventory", {
       authors: authors,
@@ -165,29 +156,28 @@ exports.postAdminAuthorInventory = async (req, res, next) => {
       pages: Math.ceil(authors_count / PER_PAGE),
       filter: filter,
       value: value,
-    })
+    });
   } catch (err) {
     console.log(err);
-    return res.redirect('back')
+    return res.redirect("back");
   }
-}
+};
 exports.getAdminGenreInventory = async (req, res, next) => {
   try {
     let page = req.params.page || 1;
-    const filter = req.params.filter
-    const value = req.params.value
+    const filter = req.params.filter;
+    const value = req.params.value;
 
     let searchObj = {};
-    if(filter !== 'all' && value !== 'all') {
+    if (filter !== "all" && value !== "all") {
       searchObj[filter] = value;
     }
 
-    const genres_count = await Genre.find(searchObj).countDocuments()
+    const genres_count = await Genre.find(searchObj).countDocuments();
 
-    const genres = await Genre
-    .find(searchObj)
-    .skip((PER_PAGE * page) - PER_PAGE)
-    .limit(PER_PAGE)
+    const genres = await Genre.find(searchObj)
+      .skip(PER_PAGE * page - PER_PAGE)
+      .limit(PER_PAGE);
 
     res.render("admin/genreInventory", {
       genres: genres,
@@ -195,30 +185,29 @@ exports.getAdminGenreInventory = async (req, res, next) => {
       pages: Math.ceil(genres_count / PER_PAGE),
       filter: filter,
       value: value,
-    })
+    });
   } catch (err) {
     console.log(err);
-    return res.redirect('back')
+    return res.redirect("back");
   }
-}
+};
 exports.postAdminGenreInventory = async (req, res, next) => {
   try {
     let page = req.params.page || 1;
-    const filter = req.body.filter.toLowerCase()
+    const filter = req.body.filter.toLowerCase();
     const value = req.body.searchName;
 
-    if(value == ""){
-      return res.redirect('back');
+    if (value == "") {
+      return res.redirect("back");
     }
-    const searchObj = {}
+    const searchObj = {};
     searchObj[filter] = value;
 
     const genres_count = await Genre.find(searchObj).countDocuments();
 
-    const genres = await Genre
-    .find(searchObj)
-    .skip((PER_PAGE * page) - PER_PAGE)
-    .limit(PER_PAGE)
+    const genres = await Genre.find(searchObj)
+      .skip(PER_PAGE * page - PER_PAGE)
+      .limit(PER_PAGE);
 
     res.render("admin/genreInventory", {
       genres: genres,
@@ -226,13 +215,12 @@ exports.postAdminGenreInventory = async (req, res, next) => {
       pages: Math.ceil(genres_count / PER_PAGE),
       filter: filter,
       value: value,
-    })
+    });
   } catch (err) {
     console.log(err);
-    return res.redirect('back')
+    return res.redirect("back");
   }
-}
-
+};
 
 exports.getAdminProfile = (req, res) => {
   res.render("admin/profile");
@@ -301,12 +289,14 @@ exports.getUserProfile = async (req, res, next) => {
     const user = await UserModel.findById(user_id);
     const comments = await Comment.find({ "author.id": user_id });
     const postRvs = await PostRv.find({ "author.id": user_id });
-    const activities = await Activity.find({"user_id.id":user_id}).sort('-entryTime')
+    const activities = await Activity.find({ "user_id.id": user_id }).sort(
+      "-entryTime"
+    );
 
     res.render("admin/user", {
       user: user,
       comments: comments,
-      activities:activities,
+      activities: activities,
       postRvs: postRvs,
     });
   } catch (err) {
@@ -362,24 +352,25 @@ exports.postShowSearchedUser = async (req, res, next) => {
   }
 };
 
-exports.getUserAllActivities = async(req, res, next) => {
+exports.getUserAllActivities = async (req, res, next) => {
   try {
     const user_id = req.params.user_id;
 
-    const activities = await Activity.find({"user_id.id": user_id}).sort('-entryTime')
-    res.render("admin/activities",{activities:activities})
+    const activities = await Activity.find({ "user_id.id": user_id }).sort(
+      "-entryTime"
+    );
+    res.render("admin/activities", { activities: activities });
   } catch (err) {
     console.log(err);
-    res.redirect('back')
+    res.redirect("back");
   }
-}
-exports.postShowActivitiesByCategory = async(req, res, next) => {
+};
+exports.postShowActivitiesByCategory = async (req, res, next) => {
   try {
-    const activities = await Activity.find({"Category":req.body.category })
-    res.render("admin/activities",{activities})
+    const activities = await Activity.find({ Category: req.body.category });
+    res.render("admin/activities", { activities });
   } catch (err) {
     console.log(err);
-    res.redirect('back')
+    res.redirect("back");
   }
-}
-
+};
