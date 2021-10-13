@@ -2,7 +2,6 @@ var express = require("express");
 var path = require("path");
 var expressValidator = require("express-validator");
 var compression = require("compression");
-var multer = require("multer")
 var flash = require("connect-flash")
 session = require("express-session"),
  MongoStore = require("connect-mongodb-session")(session),
@@ -10,7 +9,6 @@ session = require("express-session"),
  localStrategy = require("passport-local"),
  sanitizer = require("express-sanitizer"),
  methodOverride = require("method-override"),
- uid = require("uid"), // để up ảnh
 
  User  = require("./models/user")
 var UserRouter = require("./routes/user");
@@ -60,14 +58,11 @@ app.use(
   })
 );
 app.use(flash());
-
 app.use(passport.initialize()); 
 app.use(passport.session());
-
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
@@ -76,9 +71,6 @@ app.use((req, res, next) => {
   res.locals.warning = req.flash("warning");
   next();
 });
-
-
-
 app.use(authRoutes);
 app.use("/", UserRouter);
 app.use("/admin", admin);
@@ -86,9 +78,13 @@ app.use(book);
 app.use(author);
 app.use(genre);
 
+const port = "3000"
 
-app.listen(3000, () => {
-  console.log(`server started on port`);
-});
+let server = app.listen(port, () => {
+  console.log(` Server running on port ${port}`);
+})
 
+
+// var server = require("http").Server(app);
+// var io = require("socket.io")(server);
 module.exports = app;

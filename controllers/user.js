@@ -5,9 +5,10 @@ const Comment = require("../models/comment");
 const Book = require("../models/book");
 const User = require("../models/user");
 const Activity = require("../models/activity");
-var async = require("async");
-
+const Like = require("../models/like")
 const deleteImage = require("../utils/delete_image");
+var Author = require("../models/author");
+var Genre = require("../models/genre");
 
 const PER_PAGE = 5;
 
@@ -151,7 +152,6 @@ exports.deleteUserAccount = async (req, res, next) => {
     }
     await Comment.deleteMany({ "author.id": user_id });
 
-
     res.redirect("/");
   } catch (err) {
     console.log(err);
@@ -164,12 +164,14 @@ exports.getUserProfile1 = async (req, res, next) => {
 
     const user = await User.findById(user_id);
     const comments = await Comment.find({ "author.id": user_id });
-    const activities = await Activity.find({"user_id.id":user_id}).sort('-entryTime')
+    const activities = await Activity.find({ "user_id.id": user_id }).sort(
+      "-entryTime"
+    );
 
     res.render("user/user", {
       user: user,
       comments: comments,
-      activities:activities,
+      activities: activities,
     });
   } catch (err) {
     console.log(err);
@@ -210,13 +212,13 @@ exports.postNewComment = async (req, res, next) => {
       },
       category: "Comment",
       user_id: {
-          id: user_id,
-          username: username,
-      }
+        id: user_id,
+        username: username,
+      },
     });
     await activity.save();
 
-    res.redirect("/books/details/"+book_id);
+    res.redirect("/books/details/" + book_id);
   } catch (err) {
     console.log(err);
     return res.redirect("back");
@@ -298,23 +300,101 @@ exports.deleteComment = async (req, res, next) => {
   }
 };
 
-exports.getUserAllActivities = async(req, res, next) => {
+exports.getUserAllActivities = async (req, res, next) => {
   try {
     const user_id = req.params.user_id;
 
-    const activities = await Activity.find({"user_id.id": user_id}).sort('-entryTime')
-    res.render("user/activities",{activities:activities})
+    const activities = await Activity.find({ "user_id.id": user_id }).sort(
+      "-entryTime"
+    );
+    res.render("user/activities", { activities: activities });
   } catch (err) {
     console.log(err);
-    res.redirect('back')
+    res.redirect("back");
+  }
+};
+exports.postShowActivitiesByCategory = async (req, res, next) => {
+  try {
+    const activities = await Activity.find({ Category: req.body.category });
+    res.render("user/activities", { activities });
+  } catch (err) {
+    console.log(err);
+    res.redirect("back");
+  }
+};
+
+//user -> like a book
+exports.postLikeBook = async(req, res, next) => {
+  try {
+      const book = await Book.findById(req.params.book_id);
+      const user = await User.findById(req.params.user_id);
+
+      // registering like
+      const like =  new Like({
+          book_info: {
+              id: book._id,
+              title: book.title,
+              author:book.author,
+              genre: book.genre,
+          },
+          genre_info :{
+
+          },
+          user_id: {
+              id: user._id,
+              username: user.username,
+          }
+      });
+
+      // putting like record on individual user document
+      user.bookLikeInfo.push(book._id);
+
+     
+      // await ensure to synchronously save all database alteration
+      await like.save();
+      await user.save();
+      await book.save();
+      res.redirect("/books/all/all/1");
+  } catch(err) {
+      console.log(err);
+      return res.redirect("back");
   }
 }
-exports.postShowActivitiesByCategory = async(req, res, next) => {
+
+// user -> show return-renew page
+exports.getShowFavorite = async(req, res, next) => {
+  const user_id = req.user._id;
   try {
-    const activities = await Activity.find({"Category":req.body.category })
-    res.render("user/activities",{activities})
+      const like = await Like.find({"user_id.id": user_id});
+      res.render("user/favorite", {user: like,});
   } catch (err) {
-    console.log(err);
-    res.redirect('back')
+      console.log(err);
+      return res.redirect("back");
+  }
+}
+
+exports.postDislikeBook = async(req, res, next) => {
+  try {
+      // finding the position
+      const book_id = req.params.book_id;
+      const pos = req.user.bookLikeInfo.indexOf(req.params.book_id);
+      
+      // fetching book from db and increament
+      const book = await Book.findById(book_id);
+      await book.save();
+
+      // removing like 
+      const like =  await Like.findOne({"user_id.id": req.user._id});
+      await like.remove();
+
+      // popping book like info from user
+      req.user.bookLikeInfo.splice(pos, 1);
+      await req.user.save();
+
+      // redirecting
+      res.redirect("/books/all/all/1");
+  } catch(err) {
+      console.log(err);
+      return res.redirect("back");
   }
 }

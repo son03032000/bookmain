@@ -1,9 +1,7 @@
 var Book = require("../../models/book");
 var Author = require("../../models/author");
 var Genre = require("../../models/genre");
-const fs = require("fs");
 const Comment = require("../../models/comment");
-const deleteImage = require("../../utils/delete_image");
 const UserModel = require("../../models/user");
 const Activity = require("../../models/activity");
 
@@ -48,7 +46,6 @@ exports.getAdminBookInventory = async (req, res, next) => {
     if (filter !== "all" && value !== "all") {
       searchObj[filter] = value;
     }
-
     const books_count = await Book.find(searchObj)
       .countDocuments()
       .populate("author")
@@ -112,9 +109,8 @@ exports.getAdminAuthorInventory = async (req, res, next) => {
     if (filter !== "all" && value !== "all") {
       searchObj[filter] = value;
     }
-
     const authors_count = await Author.find(searchObj).countDocuments();
-
+    
     const authors = await Author.find(searchObj)
       .skip(PER_PAGE * page - PER_PAGE)
       .limit(PER_PAGE);
@@ -307,12 +303,6 @@ exports.getDeleteUser = async (req, res, next) => {
     const user_id = req.params.user_id;
     const user = await UserModel.findById(user_id);
     await user.remove();
-
-    let imagePath = `iamges/${user.image}`;
-    if (fs.existsSync(imagePath)) {
-      deleteImage(imagePath);
-    }
-
     await Comment.deleteMany({ "author.id": user_id });
 
     res.redirect("/admin/users/1");

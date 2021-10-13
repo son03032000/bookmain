@@ -19,7 +19,8 @@ exports.book_list = async (req, res, next) => {
       .skip(PER_PAGE * page - PER_PAGE)
       .limit(PER_PAGE)
       .populate("author")
-      .populate("genre");
+      .populate("genre")
+      .populate("likes");
     // Lấy tổng số sách có sẵn của bộ lọc nhất định
     const count = await Book.find(searchoObj).countDocuments();
 
@@ -83,7 +84,6 @@ exports.book_detail = async (req, res, next) => {
       .populate("comments")
       .populate("author")
       .populate("genre")
-      .populate("postrv");
     //Successful, so render
     res.render("user/bookDetails", {
       title: "Title",

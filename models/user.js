@@ -20,6 +20,16 @@ const userSchema = new mongoose.Schema({
   },
   password: String,
   joined: { type: Date, default: Date.now() },
+  bookLikeInfo: [
+    {
+      book_info: {
+        id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Like",
+        },
+      },
+    },
+  ],
   gender: String,
   address: String,
   image: {

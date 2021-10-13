@@ -11,11 +11,10 @@ var BookSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Comment"
   }],
-  postrv: [{
+  likes: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "PostRV"
-  }]
-
+    ref: "Like"
+  }],
 });
 
 //Export model

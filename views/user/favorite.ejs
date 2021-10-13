@@ -1,0 +1,58 @@
+<%- include('../partials/header') %> 
+<!--NAVIGATION BAR FOR USER-->
+
+<%- include('../partials/userNav') %> 
+
+
+<!--DASHBOARD SECTION-->
+<header id="main-header" class="py-2 bg-info text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1><i class="fa fa-retweet"></i> Sách Yêu thích</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!--NOTIFICATIONS-->
+<section class="mt-4 py-3">
+    <div class="container">
+        <div class="col mx-auto">
+        
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>All Books</h4>
+          </div>
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% user.forEach(book => { %>
+                <tr>
+                <td><%=book.book_info.title%></td>
+                <td><%=book.book_info.author%></td>
+                <td><%=book.book_info.genre%></td>
+                <td>
+                  <form action="/books/<%=book.book_info.id%>/dislike" method="POST" class="d-inline">
+                   <input class="btn btn-xs btn-info" type="submit" value="Dislike">
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          
+        </div>
+      </div>
+    </div>
+</section>
+
+
+<%- include('../partials/footer') %> 

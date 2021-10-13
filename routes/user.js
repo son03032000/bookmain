@@ -30,8 +30,16 @@ router.get("/users/activities/:user_id",middleware.isLoggedIn,user_controller.ge
 router.post("/users/activities/:user_id",middleware.isLoggedIn,user_controller.postShowActivitiesByCategory)
 
 
-module.exports = router;
+//user -> issue a book
+router.post("/books/:book_id/like/:user_id", middleware.isLoggedIn, user_controller.postLikeBook);
 
+//user -> show return-renew page
+router.get("/books/favorite", middleware.isLoggedIn, user_controller.getShowFavorite);
+
+
+// user -> return book
+
+router.post("/books/:book_id/dislike", middleware.isLoggedIn, user_controller.postDislikeBook);
 
 
 module.exports = router;
