@@ -2,7 +2,12 @@ var Book = require("../../models/book");
 var Author = require("../../models/author");
 var async = require("async");
 var { body, validationResult } = require("express-validator/check");
-
+const cloudinary = require("cloudinary");
+cloudinary.config({
+  cloud_name: "sstt",
+  api_key: 878854271598434,
+  api_secret: "UyilBk07KLomikO5mafQJdDt-zw",
+});
 // Hiển thị Tác giả tạo biểu mẫu on GET
 exports.author_create_get = (req, res) => {
   const authors = Author.find();
@@ -10,7 +15,7 @@ exports.author_create_get = (req, res) => {
 };
 
 // Xử lý Tác giả tạo on POST
-exports.author_create_post = (req, res) => {
+exports.author_create_post = async (req, res) => {
   req.checkBody("first_name", "First name must be specified.").notEmpty(); //Chúng tôi sẽ không ép buộc chữ và số, vì mọi người có thể có khoảng trắng.
   req.checkBody("last_name", "last name must be specified.").notEmpty();
   req
@@ -18,12 +23,14 @@ exports.author_create_post = (req, res) => {
     .isAlphanumeric();
 
   var errors = req.validationErrors();
-
+  const result = await cloudinary.v2.uploader.upload(req.file.path);
   var author = new Author({
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     date_of_birth: req.body.date_of_birth,
     date_of_death: req.body.date_of_death,
+    describe: req.body.describe,
+    ImageUrl: result.secure_url,
   });
 
   if (errors) {
@@ -155,12 +162,15 @@ exports.author_update_post = [
     .optional({ checkFalsy: true })
     .isISO8601(),
 
-  (req, res, next) => {
+  async (req, res, next) => {
+    const result = await cloudinary.v2.uploader.upload(req.file.path);
     var author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
       date_of_death: req.body.date_of_death,
+      describe: req.body.describe,
+      ImageUrl: result.secure_url,
       _id: req.params.author_id,
     });
     // Data from form is valid. Update the record.

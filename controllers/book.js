@@ -1,5 +1,5 @@
 var Book = require("../models/book");
-const PER_PAGE = 8;
+const PER_PAGE = 9;
 
 // Hiển thị danh sách tất cả sách
 exports.book_list = async (req, res, next) => {

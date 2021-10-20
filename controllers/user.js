@@ -6,10 +6,13 @@ const Book = require("../models/book");
 const User = require("../models/user");
 const Activity = require("../models/activity");
 const Like = require("../models/like")
-const deleteImage = require("../utils/delete_image");
-var Author = require("../models/author");
-var Genre = require("../models/genre");
-
+const cloudinary = require("cloudinary");
+// Setup Cloudinary
+cloudinary.config({
+  cloud_name: "sstt",
+  api_key: 878854271598434,
+  api_secret: "UyilBk07KLomikO5mafQJdDt-zw",
+});
 const PER_PAGE = 5;
 
 exports.getUserDashboard = async (req, res, next) => {
@@ -37,37 +40,19 @@ exports.getUserDashboard = async (req, res, next) => {
     return res.redirect("back");
   }
 };
-
 exports.getUserProfile = (req, res, next) => {
   res.render("user/profile");
 };
+
 // upload image
 exports.postUploadUserImage = async (req, res, next) => {
   try {
     const user_id = req.user._id;
     const user = await User.findById(user_id);
 
-    let imageUrl;
-    if (req.file) {
-      imageUrl = `${uid()}__${req.file.originalname}`;
-      let filename = `images/${imageUrl}`;
-      let previousImagePath = `images/${user.image}`;
 
-      const imageExist = fs.existsSync(previousImagePath);
-      if (imageExist) {
-        deleteImage(previousImagePath);
-      }
-      await sharp(req.file.path).rotate().resize(500, 500).toFile(filename);
-
-      fs.unlink(req.file.path, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-    } else {
-      imageUrl = "profile.png";
-    }
-
+    const result = await cloudinary.v2.uploader.upload(req.file.path);
+    let imageUrl = result.secure_url;
     user.image = imageUrl;
     await user.save();
 
@@ -145,13 +130,6 @@ exports.deleteUserAccount = async (req, res, next) => {
     const user_id = req.user._id;
     const user = await User.findById(user_id);
     await user.remove();
-
-    let imagePath = `images/${user.image}`;
-    if (fs.existsSync(imagePath)) {
-      deleteImage(imagePath);
-    }
-    await Comment.deleteMany({ "author.id": user_id });
-
     res.redirect("/");
   } catch (err) {
     console.log(err);

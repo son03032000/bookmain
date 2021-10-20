@@ -41,12 +41,15 @@ exports.book_create_post = async (req, res, next) => {
     req.checkBody("title", "Title must not be empty.").notEmpty(); //Tiêu đề không được để trống.
     req.checkBody("author", "Author must not be empty").notEmpty();
     req.checkBody("summary", "Summary must not be empty").notEmpty();
+    req.checkBody("describe", "describe must not be empty").notEmpty();
+
 
     const result = await cloudinary.v2.uploader.upload(req.file.path);
     var book = new Book({
       title: req.body.title,
       author: req.body.author,
       summary: req.body.summary,
+      describe: req.body.describe,
       ImageUrl: result.secure_url,
       genre:
         typeof req.body.genre === "undefined" ? [] : req.body.genre.split(","),
@@ -185,7 +188,8 @@ exports.book_update_post = [
   body("title", "Title must not be empty.").isLength({ min: 1 }).trim(),
   body("author", "Author must not be empty.").isLength({ min: 1 }).trim(),
   body("summary", "Summary must not be empty.").isLength({ min: 1 }).trim(),
-  body("isbn", "ISBN must not be empty").isLength({ min: 1 }).trim(),
+  body("describe", "describe must not be empty.").isLength({ min: 1 }).trim(),
+
 
   async (req, res, next) => {
     // Trích xuất các lỗi xác thực từ một yêu cầu
@@ -196,6 +200,7 @@ exports.book_update_post = [
       title: req.body.title,
       author: req.body.author,
       summary: req.body.summary,
+      describe: req.body.describe,
       ImageUrl: result.secure_url,
       genre: typeof req.body.genre === "undefined" ? [] : req.body.genre,
       _id: req.params.book_id, //Điều này là bắt buộc, nếu không ID mới sẽ được chỉ định!

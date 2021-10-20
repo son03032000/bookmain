@@ -15,6 +15,14 @@
 <h4 class="text-center"> Tác giả: <%= author.name%> 
     <p>(<%= author.author_DOB_formatted%>)- (<%= author.author_DOD_formatted%>)  </p></h4>
 <div style="margin-left:20px;margin-top:20px"></div>
+<p class="text-muted">
+  <img  src="<%=author.ImageUrl%>" class="img-item1" style="text-align: center;">
+</p>
+<div class="card-body" style="text-align: center;">
+  <p class="card-text" style="text-align: center;">
+      <%- author.describe %> 
+  </p>
+</div>
 <h4 style="margin-left:570px;margin-top:20px">Những Cuốn sách thuộc tác giả này</h4>
 <div class="row">
     <% for (let book of author_books) { %>

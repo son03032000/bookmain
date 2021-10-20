@@ -15,7 +15,7 @@
               <h4>Update Author</h4>
             </div>
               <div class="card-block">
-                <form class="p-3" action="/admin/author/update/<%=author._id%>" method="POST">                      
+                <form class="p-3" action="/admin/author/update/<%=author._id%>" method="POST" enctype="multipart/form-data">                      
 
                     <div class="form-group">
                       <label class="form-control-label" for="first_name">First Name:</label>
@@ -36,7 +36,14 @@
                       <label class="form-control-label" for="date_of_death">date_of_death:</label>
                       <input class="form-control" id="date_of_death"  type="date" name="date_of_death" value="<%= (undefined===author ? '' :  author.date_of_death)%>"required="true">
                   </div>
-
+                  <div class="form-group">
+                    <label class="form-control-label" for="coverImg">Image Cover</label>
+                    <input type="file" name="image" class="form-control p-0 h-30" required="true">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label" for="describe">Author describe</label>
+                    <input type="textarea" id="describe" class="form-control" placeholder="describe" required="true" name="describe" value="<%= book.describe %>">
+                  </div>
                   <button type="submit" class="btn btn-primary btn-block">Update Author</button>
                 </form>
               </div>

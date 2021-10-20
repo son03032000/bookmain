@@ -88,6 +88,12 @@
             <p>
                 (<%= author.author_DOB_formatted%> - <%=author.author_DOD_formatted%>)
             </p>
+            <p class="text-muted">
+              <img  src="<%=author.ImageUrl%>" class="img-item">
+            </p>
+            <p class="card-text">
+              Sơ lược:  <%- author.describe %> 
+            </p>
           </div>
         </div>
     <% } %>

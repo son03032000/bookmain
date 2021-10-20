@@ -8,6 +8,8 @@ var AuthorSchema = new Schema({
   last_name: { type: String, require: true, max: 100 },
   date_of_birth: { type: Date },
   date_of_death: { type: Date },
+  describe:{ type: String, required: true },
+  ImageUrl: { type: String, required: true },
 });
 
 //Virtual for author's full name

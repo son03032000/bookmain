@@ -67,7 +67,7 @@ router.post('/book/update/:book_id',upload.single('image'), book_controller.book
 /* GET request for creating Author. NOTE This must come before route for id (i.e. display author) */
 router.get('/authors/add', author_controller.author_create_get);
 /* POST request for creating Author. */
-router.post('/authors/add',author_controller.author_create_post);
+router.post('/authors/add',upload.single('image'),author_controller.author_create_post);
 /* GET request to delete Author. */
 router.get('/author/delete/:id',author_controller.author_delete_get);
 // POST request to delete Author
@@ -75,7 +75,7 @@ router.post('/author/delete/:id', author_controller.author_delete_post);
 /* GET request to update Author. */
 router.get('/author/update/:author_id', author_controller.author_update_get);
 // POST request to update Author
-router.post('/author/update/:author_id', author_controller.author_update_post);
+router.post('/author/update/:author_id',upload.single('image'), author_controller.author_update_post);
 
 
 
@@ -86,7 +86,7 @@ router.post('/author/update/:author_id', author_controller.author_update_post);
 /* GET request for creating a Genre. NOTE This must come before route that displays Genre (uses id) */
 router.get('/genres/add', genre_controller.genre_create_get);
 /* POST request for creating Genre. */
-router.post('/genres/add', genre_controller.genre_create_post);
+router.post('/genres/add',upload.single('image'), genre_controller.genre_create_post);
 /* GET request to delete Genre. */
 router.get('/genre/delete/:id', genre_controller.genre_delete_get);
 // POST request to delete Genre
@@ -94,7 +94,7 @@ router.post('/genre/delete/:id', genre_controller.genre_delete_post);
 /* GET request to update Genre. */
 router.get('/genre/update/:genre_id', genre_controller.genre_update_get);
 // POST request to update Genre
-router.post('/genre/update/:genre_id', genre_controller.genre_update_post);
+router.post('/genre/update/:genre_id',upload.single('image'), genre_controller.genre_update_post);
 
 
 

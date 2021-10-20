@@ -101,14 +101,16 @@
 <!--BOOKS-->
 <section id="browse_books" class="mt-5" >
   <div class="container">
-    
-    <div class="row">
+    <div class="row col-md-11" style="margin-left: 1.25cm;">
       <% for (let book of books) { %>
-    <div class="card col-md-3 text-center" style="background-color: #FFFFCF;">
+    <div class="card col-md-4 text-center" style="background-color: #FFFFCF;">
       
           <div class="card-body" style="background-color: #FFFFCF;">
             <p class="text-muted">
             <a href="/books/details/<%=book._id%>" style="color: black; font-size: 20px;"><%=book.title%></a>
+          </p>
+          <p class="text-muted">
+            <img  src="<%=book.ImageUrl%>" class="img-item">
           </p>
 
             <p class="text-muted">
@@ -118,10 +120,11 @@
             <p class="text-muted">
               <a href="/genres/details/<%=book.genre[0]._id%>" class=""style="color: black;font: 15px "> Thể loại : <%=book.genre[0].name%></a>
             </p>
-            <p class="text-muted">
-              <img  src="<%=book.ImageUrl%>" class="img-item">
-            </p>
-            
+        
+              <p class="card-text">
+                Sơ lược:  <%- book.describe %> 
+              </p>
+
             <% if(currentUser) { var match = false%>
               <% user.bookLikeInfo.forEach(book_info => { %>
                   <% if(book_info._id.equals(book._id)) { %> 
@@ -142,8 +145,8 @@
     <% } %>
     </div>
     <% if (pages > 0) { %>
-      <nav class="ml-3 mb-2">
-        <ul class="pagination offset-md-3">
+      <nav class="ml-3 mb-2" >
+        <ul class="pagination offset-md-5">
           
           <% if (current == 1) { %>
             <li class="page-item disabled"><a class="page-link">First</a></li>

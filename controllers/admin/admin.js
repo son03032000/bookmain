@@ -291,7 +291,6 @@ exports.getUserProfile = async (req, res, next) => {
       user: user,
       comments: comments,
       activities: activities,
-      postRvs: postRvs,
     });
   } catch (err) {
     console.log(err);
@@ -324,7 +323,7 @@ exports.postShowSearchedUser = async (req, res, next) => {
         { email: search_value },
       ],
     });
-    if (user.length <= 0) {
+    if (users.length <= 0) {
       return res.redirect("back");
     } else {
       res.render("admin/users", {

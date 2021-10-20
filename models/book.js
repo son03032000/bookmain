@@ -5,6 +5,7 @@ var BookSchema = new mongoose.Schema({
   title: { type: String, required: true },
   author: { type: mongoose.Schema.Types.ObjectId, ref: "Author", required: true },
   summary: { type: String, required: true },
+  describe:{ type: String, required: true },
   ImageUrl: { type: String, required: true },
   genre: [{ type: mongoose.Schema.Types.ObjectId, ref: "Genre" }],
   comments: [{

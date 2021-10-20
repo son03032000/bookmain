@@ -32,10 +32,7 @@ const userSchema = new mongoose.Schema({
   ],
   gender: String,
   address: String,
-  image: {
-    type: String,
-    default: "",
-  },
+  image: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
 });
 

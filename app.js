@@ -20,6 +20,7 @@ var genre = require("./routes/genre")
 
 
 
+
 var app = express();
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 // view engine setup
@@ -78,13 +79,13 @@ app.use(book);
 app.use(author);
 app.use(genre);
 
-const port = "3000"
-
-let server = app.listen(port, () => {
-  console.log(` Server running on port ${port}`);
-})
 
 
-// var server = require("http").Server(app);
-// var io = require("socket.io")(server);
+
+const port = process.env.PORT || 3000;
+server = app.listen(port, function () {
+  console.log("its running now on " + port + "");
+});
+
+
 module.exports = app;

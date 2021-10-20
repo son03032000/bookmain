@@ -33,11 +33,9 @@ router.post("/users/activities/:user_id",middleware.isLoggedIn,user_controller.p
 //user -> issue a book
 router.post("/books/:book_id/like/:user_id", middleware.isLoggedIn, user_controller.postLikeBook);
 
-//user -> show return-renew page
+//user -> show favorite
 router.get("/books/favorite", middleware.isLoggedIn, user_controller.getShowFavorite);
-
-
-// user -> return book
+// user -> dislike book
 
 router.post("/books/:book_id/dislike", middleware.isLoggedIn, user_controller.postDislikeBook);
 
