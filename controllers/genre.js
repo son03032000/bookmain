@@ -78,8 +78,8 @@ exports.genre_detail = async (req, res, next) => {
   }
   try {
       const genre = await Genre.findById(req.params.genre_id)
-      const genre_books = await Book.find({genre: req.params.genre_id}).skip(PER_PAGE * page - PER_PAGE)
-      
+      const genre_books = await Book.find({genre: req.params.genre_id})
+      .skip(PER_PAGE * page - PER_PAGE) 
       .limit(PER_PAGE)
       const count = await Genre.find(searchoObj).countDocuments();
         //Successful, so render

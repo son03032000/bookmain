@@ -1,8 +1,7 @@
-const fs = require("fs");
-const sharp = require("sharp");
-const uid = require("uid");
 const Comment = require("../models/comment");
 const Book = require("../models/book");
+const Author = require("../models/author")
+const Genre = require("../models/genre")
 const User = require("../models/user");
 const Activity = require("../models/activity");
 const Like = require("../models/like")
@@ -312,11 +311,6 @@ exports.postLikeBook = async(req, res, next) => {
           book_info: {
               id: book._id,
               title: book.title,
-              author:book.author,
-              genre: book.genre,
-          },
-          genre_info :{
-
           },
           user_id: {
               id: user._id,

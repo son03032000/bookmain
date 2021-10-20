@@ -7,8 +7,6 @@ const likeSchema = new mongoose.Schema({
            ref : 'Book', 
        },
        title : String,
-       author: { type: mongoose.Schema.Types.ObjectId, ref: "Author"},
-       genre: [{ type: mongoose.Schema.Types.ObjectId, ref: "Genre" }],
    },
    user_id : {
        id : {

@@ -12,15 +12,6 @@
 
 <div class="container mt-3">
     <div class="row justify-content-center">
-        <div class="col-md-2">
-            <h4 class="text-center pb-3">Terms & Conditions</h4>
-            <ul>
-                <li>Rule x should be abided by everyone</li>
-                <li>Rule x should be abided by everyone</li>
-                <li>Rule x should be abided by everyone</li>
-                <li>Rule x should be abided by everyone</li>
-            </ul>
-        </div>
         <div class="col-md-8">
             
             <div class="card">
@@ -35,12 +26,12 @@
                   <a href="/genres/details/<%=book.genre[0]._id%>" class=""style="width: 300px;margin-left: auto; margin-right: auto;color: black;"> Thuộc thể loại : <%=book.genre[0].name%></a>
                 <div class="card-body">
                     <p class="card-text">
-                        <%- book.describe %> 
+                        Sơ lược qua: <%- book.describe %> 
                     </p>
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        <%- book.summary %> 
+                        Nhận xét: <%- book.summary %> 
                     </p>
                 </div>
             </div>
@@ -102,14 +93,9 @@
             
             </div>
         </div>
-        <div class="col-md-2">
-            <h4 class="text-center pb-3">Terms & Conditions</h4>
-            <ul>
-                <li>Rule x should be abided by everyone</li>
-                <li>Rule x should be abided by everyone</li>
-                <li>Rule x should be abided by everyone</li>
-                <li>Rule x should be abided by everyone</li>
-            </ul>
+        <div class="col-md-3">
+            <h4 class="text-center pb-3">Những cuốn sách có liên quan</h4>
+            
         </div>
     </div>
 </div> 
