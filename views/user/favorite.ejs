@@ -27,17 +27,18 @@
           <table class="table table-striped">
             <thead class="thead-inverse">
               <tr>
-                <th>Title</th>
+                <th>Tên Sách</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <% user.forEach(book => { %>
                 <tr>
-                <td><%=book.book_info.title%></td>
+                  
+                <td><a href="/books/details/<%=book.book_info.id%>" style="color: black; font-size: 20px;"><%=book.book_info.title%></a></td>
                 <td>
                   <form action="/books/<%=book.book_info.id%>/dislike" method="POST" class="d-inline">
-                   <input class="btn btn-xs btn-info" type="submit" value="Dislike">
+                   <input class="btn btn-secondary" type="submit" value="Xóa khỏi mục ưa thích">
                   </form>
                 </td>
               </tr>

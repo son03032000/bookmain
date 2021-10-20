@@ -11,7 +11,7 @@ exports.genre_create_post = function (req, res, next) {
   req.checkBody("name", "Genre name required").notEmpty();
   var errors = req.validationErrors();
 
-  var genre = new Genre({ name: req.body.name });
+  var genre = new Genre({ name: req.body.name,describe: req.body.describe, });
 
   if (errors) {
     res.render("admin/genre/genre_form", {
@@ -133,6 +133,7 @@ exports.genre_update_post = [
     // Create a genre object with escaped and trimmed data (and the old id!)
     var genre = new Genre({
       name: req.body.name,
+      describe: req.body.describe,
       _id: req.params.genre_id,
     });
 

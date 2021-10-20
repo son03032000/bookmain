@@ -7,11 +7,24 @@
   <%- include('../partials/adminNav') %> 
 <% }%>
 
-  
-  
+<div class="container mt-3">
+  <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+              <h4 class="text-center"> Thể loại: <%= genre.name%></h4>
+                <div style="margin-left:20px;margin-top:20px"></div>
+          </div>
+          <div class="card-body">
+              <p class="card-text">
+                  Sơ lược qua: <%- genre.describe %> 
+              </p>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
 
-<h4 class="text-center"> Thể loại <%= genre.name%></h4>
-<div style="margin-left:20px;margin-top:20px"></div>
 <h4 style="margin-left:570px;margin-top:20px">Những Cuốn sách thuộc thể loại này</h4>
 <div class="row"> 
     <% for (let book of genre_books) { %>
@@ -20,10 +33,11 @@
         <div class="card-body">
             
           <h5 class="card-title"> <%=book.title%> </h5>
-          <p class="text-muted">
-            <img  src="<%=book.ImageUrl%>" class="img-item">
-          </p>
-          <a href="/books/details/<%=book._id%>" class="btn btn-xs btn-primary">Details</a>
+          <a href="/books/details/<%=book._id%>">
+            <p class="text-muted">
+              <img  src="<%=book.ImageUrl%>" class="img-item">
+            </p>
+          </a>
         </div>
       </div>
   <% } %>
@@ -33,7 +47,7 @@
     <% } %>
   <% if (pages > 0) { %>
     <nav class="ml-3 mb-2">
-      <ul class="pagination offset-md-3">
+      <ul class="pagination offset-md-5">
         
         <% if (current == 1) { %>
           <li class="page-item disabled"><a class="page-link">First</a></li>

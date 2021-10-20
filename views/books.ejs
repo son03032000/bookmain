@@ -102,10 +102,12 @@
       
           <div class="card-body" style="background-color: #FFFFCF;">
             <p class="text-muted">
-            <a href="/books/details/<%=book._id%>" style="color: black; font-size: 20px;"><%=book.title%></a>
+            <a style="color: black; font-size: 20px;"><%=book.title%></a>
           </p>
           <p class="text-muted">
+            <a href="/books/details/<%=book._id%>">
             <img  src="<%=book.ImageUrl%>" class="img-item">
+            </a>
           </p>
 
             <p class="text-muted">
@@ -124,14 +126,14 @@
               <% user.bookLikeInfo.forEach(book_info => { %>
                   <% if(book_info._id.equals(book._id)) { %> 
                      <form action="/books/<%=book.id%>/dislike" method="POST" class="d-inline">
-                      <input class="btn btn-xs btn-info" type="submit" value="Dislike">
+                      <input class="btn btn-secondary" type="submit" value="Xóa khỏi mục ưa thích">
                      </form>
                   <% match = true; } %>
            <% }) %>
            
            <% if(!match) {%>
           <form action="/books/<%=book._id%>/like/<%=currentUser._id%>" method="POST" class="d-inline">
-             <input class="btn btn-xs btn-success" type="submit" value="Like">
+             <input class="btn btn-secondary" type="submit" value="Thêm vào mục ưa thích">
           </form>
           <% } %>
           <% } %>

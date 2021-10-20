@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 var GenreSchema = new Schema({
   name: { type: String, required: true, minlength: 3, maxlength: 100 },
+  describe:{ type: String, required: true },
 });
 
 GenreSchema.virtual("url").get(function () {

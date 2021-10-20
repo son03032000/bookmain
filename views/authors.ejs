@@ -65,7 +65,30 @@
       </div>
   </div>
 </nav>
+<!--SEARCH BAR-->
 
+<section id="search_bar" class="my-3 py-4 bg-light">
+  <div class="container">
+   <form action="/authors/all/all/1" method="POST">
+    <div class="row">
+        <div class="col-md-5 p-1">
+          <select name="filter" class="form-control">
+            <option selected disabled>Select Filter...</option>
+            <option  name="first_name">first_name</option>
+            <option  name="author">Author</option>
+            <option  name="genre">genre</option>
+          </select>
+        </div>
+         <div class="col-md-5 p-1">
+          <input name="searchName"  type="text" class="form-control" placeholder="Search Books">
+        </div>
+         <div class="col-md-2 p-1">
+          <input type="submit" class="btn btn-outline-primary btn-block" value="Search">
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
 
 <%- include('./partials/alerts') %> 
 <!--BOOKS-->
@@ -127,7 +150,6 @@
    <% } %>
   </div>
 </section>
-
 
 
 <%- include('./partials/footer') %> 
