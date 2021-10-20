@@ -18,6 +18,11 @@ router.put("/user/1/update-profile",middleware.isLoggedIn,user_controller.putUpd
 router.delete("/user/1/delete-profile",middleware.isLoggedIn, user_controller.deleteUserAccount)
 router.get("/users/profile/:user_id",middleware.isLoggedIn,user_controller.getUserProfile1)
 
+// user list
+router.get("/users/friend/:page", middleware.isLoggedIn,user_controller.user_list);
+//show searched user
+router.post("/users/friend/:page",middleware.isLoggedIn,user_controller.postShowSearchedUser )
+
 //create New Cmt
 router.post("/books/details/:book_id/comment", middleware.isLoggedIn,user_controller.postNewComment)
 //user -> update existing comment

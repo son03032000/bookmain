@@ -1,7 +1,5 @@
 const Comment = require("../models/comment");
 const Book = require("../models/book");
-const Author = require("../models/author")
-const Genre = require("../models/genre")
 const User = require("../models/user");
 const Activity = require("../models/activity");
 const Like = require("../models/like")
@@ -155,6 +153,54 @@ exports.getUserProfile1 = async (req, res, next) => {
     res.redirect("back");
   }
 };
+
+exports.user_list = async (req, res, next) => {
+  try {
+    const page = req.params.page || 1;
+
+    const users = await User.find()
+      .skip(PER_PAGE * page - PER_PAGE)
+      .limit(PER_PAGE);
+    const users_count = await User.find().countDocuments();
+
+    res.render("user/users", {
+      users: users,
+      current: page,
+      pages: Math.ceil(users_count / PER_PAGE),
+    });
+  } catch (err) {
+    console.log(err);
+    res.redirect("back");
+  }
+};
+exports.postShowSearchedUser = async (req, res, next) => {
+  try {
+    const page = req.params.page || 1;
+    const search_value = req.body.searchUser;
+
+    const users = await User.find({
+      $or: [
+        { firstName: search_value },
+        { lastName: search_value },
+        { userName: search_value },
+        { email: search_value },
+      ],
+    });
+    if (users.length <= 0) {
+      return res.redirect("back");
+    } else {
+      res.render("user/users", {
+        users: users,
+        current: page,
+        pages: 0,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("back");
+  }
+};
+
 exports.postNewComment = async (req, res, next) => {
   try {
     const comment_text = req.body.comment;

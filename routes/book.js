@@ -11,4 +11,5 @@ router.post('/books/:filter/:value/:page', book_controller.findBooks)
 router.get('/books/details/:book_id',middleware.isLoggedIn, book_controller.book_detail);
 
 
+
 module.exports = router;
