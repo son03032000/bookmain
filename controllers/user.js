@@ -22,32 +22,23 @@ exports.getUserDashboard = async (req, res, next) => {
       .skip(PER_PAGE * page - PER_PAGE)
       .limit(PER_PAGE);
 
-    const activity_count = await Activity.find({
-      "user_id.id": req.user._id,
-    }).countDocuments();
-
+    const activity_count = await Activity.find({"user_id.id": req.user._id,}).countDocuments();
     res.render("user/index", {
       user: user,
       current: page,
       pages: Math.ceil(activity_count / PER_PAGE),
       activities: activities,
     });
-  } catch (err) {
-    console.log(err);
-    return res.redirect("back");
-  }
+  } catch (err) {console.log(err);return res.redirect("back");}
 };
-exports.getUserProfile = (req, res, next) => {
-  res.render("user/profile");
-};
+
+exports.getUserProfile = (req, res, next) => {res.render("user/profile");};
 
 // upload image
 exports.postUploadUserImage = async (req, res, next) => {
   try {
     const user_id = req.user._id;
     const user = await User.findById(user_id);
-
-
     const result = await cloudinary.v2.uploader.upload(req.file.path);
     let imageUrl = result.secure_url;
     user.image = imageUrl;
@@ -55,18 +46,12 @@ exports.postUploadUserImage = async (req, res, next) => {
 
     const activity = new Activity({
       category: "Upload Photo",
-      user_id: {
-        id: req.user._id,
-        username: user.username,
-      },
+      user_id: {id: req.user._id,username: user.username,},
     });
     await activity.save();
 
     res.redirect("/user/1/profile");
-  } catch (err) {
-    console.log(err);
-    res.redirect("back");
-  }
+  } catch (err) {console.log(err);res.redirect("back");}
 };
 
 //update pass
@@ -74,25 +59,17 @@ exports.putUpdatePassword = async (req, res, next) => {
   const username = req.user.username;
   const oldPassword = req.body.oldPassword;
   const newPassword = req.body.password;
-
   try {
     const user = await User.findOne(username);
     await user.changePassword(oldPassword, newPassword);
     await user.save();
-
     const activity = new Activity({
       categogy: "Update Password",
-      user_id: {
-        id: req.user._id,
-        username: user.username,
-      },
+      user_id: {id: req.user._id,username: user.username,},
     });
     await activity.save();
     res.redirect("/auth/user-login");
-  } catch (err) {
-    console.log(err);
-    return res.redirect("back");
-  }
+  } catch (err) {console.log(err);return res.redirect("back");}
 };
 
 // update profile
@@ -109,18 +86,11 @@ exports.putUpdateUserProfile = async (req, res, next) => {
 
     const activity = new Activity({
       categogy: "Update Profile",
-      user_id: {
-        id: req.user._id,
-        username: user.username,
-      },
+      user_id: {id: req.user._id,username: req.user.username},
     });
     await activity.save();
-
     res.redirect("back");
-  } catch (err) {
-    console.log(err);
-    return res.redirect("back");
-  }
+  } catch (err) {console.log(err);return res.redirect("back");}
 };
 exports.deleteUserAccount = async (req, res, next) => {
   try {
@@ -128,39 +98,28 @@ exports.deleteUserAccount = async (req, res, next) => {
     const user = await User.findById(user_id);
     await user.remove();
     res.redirect("/");
-  } catch (err) {
-    console.log(err);
-    return res.redirect("back");
-  }
+  } catch (err) {console.log(err);return res.redirect("back");}
 };
 exports.getUserProfile1 = async (req, res, next) => {
   try {
     const user_id = req.params.user_id;
-
     const user = await User.findById(user_id);
     const comments = await Comment.find({ "author.id": user_id });
     const activities = await Activity.find({ "user_id.id": user_id }).sort(
       "-entryTime"
     );
-
     res.render("user/user", {
       user: user,
       comments: comments,
       activities: activities,
     });
-  } catch (err) {
-    console.log(err);
-    res.redirect("back");
-  }
+  } catch (err) {console.log(err);res.redirect("back");}
 };
 
 exports.user_list = async (req, res, next) => {
   try {
     const page = req.params.page || 1;
-
-    const users = await User.find()
-      .skip(PER_PAGE * page - PER_PAGE)
-      .limit(PER_PAGE);
+    const users = await User.find().skip(PER_PAGE * page - PER_PAGE).limit(PER_PAGE);
     const users_count = await User.find().countDocuments();
 
     res.render("user/users", {
@@ -168,10 +127,7 @@ exports.user_list = async (req, res, next) => {
       current: page,
       pages: Math.ceil(users_count / PER_PAGE),
     });
-  } catch (err) {
-    console.log(err);
-    res.redirect("back");
-  }
+  } catch (err) {console.log(err);res.redirect("back");}
 };
 exports.postShowSearchedUser = async (req, res, next) => {
   try {
