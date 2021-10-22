@@ -51,9 +51,10 @@
                 <tr>
                   <th>Name</th>
                   <th>User name</th>
+                  <th>avarta</th>
                   <th>Email</th>
                    <th>Gender</th>
-                  <th>Date Regisetered</th>
+                  <th>Date make friend</th>
                   <th></th>
                 </tr>
               </thead>
@@ -63,10 +64,11 @@
                 <%if (user.isAdmin) return; %>
                   <tr>
                   <td><%=user.firstName + " " + user.lastName%></td>
+                  <td><img src="<%=user.image%>"%>" class="card-img-top rounded-circle" style = "width: 100px;height: 100px;"></td>
                   <td><a href="/users/profile/<%=user._id%>" title="Visit this user"><%=user.username%></a></td>
                   <td><%=user.email%></td>
                    <td><%=user.gender%></td>
-                  <td><%=user.joined.toDateString()%>      
+                  <td><%=user.joined.toDateString()%>     
                 </tr>
              
               <% }); %>
