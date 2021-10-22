@@ -61,7 +61,7 @@
               <tbody>
                 
               <% users.forEach(user => { %>
-                <%if (user.isAdmin) return; %>
+                <%if (user.isAdmin ) return; %>
                   <tr>
                   <td><%=user.firstName + " " + user.lastName%></td>
                   <td><img src="<%=user.image%>"%>" class="card-img-top rounded-circle" style = "width: 100px;height: 100px;"></td>

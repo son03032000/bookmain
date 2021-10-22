@@ -39,7 +39,7 @@ app.use(sanitizer());
 //Set up mongoose connection
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/test", {});
+mongoose.connect("mongodb+srv://son03032000:03032000@cluster0.rhe01.mongodb.net/project?retryWrites=true&w=majority", {});
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
