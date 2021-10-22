@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const passport = require("passport")
-
+passport.use(new localStrategy(User.authenticate()));
 
 // Import index controller
 const authController = require('../controllers/auth');

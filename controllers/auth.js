@@ -1,6 +1,12 @@
 // importing libraries
 const passport = require("passport");
-
+const cloudinary = require("cloudinary");
+// Setup Cloudinary
+cloudinary.config({
+  cloud_name: "sstt",
+  api_key: 878854271598434,
+  api_secret: "UyilBk07KLomikO5mafQJdDt-zw",
+});
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 // importing models
