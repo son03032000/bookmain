@@ -40,6 +40,7 @@ app.use(sanitizer());
 const mongoose = require("mongoose");
 
 mongoose.connect("mongodb+srv://son03032000:03032000@cluster0.rhe01.mongodb.net/project?retryWrites=true&w=majority", {});
+// mongoose.connect("mongodb://localhost/test", {});
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
@@ -88,4 +89,5 @@ server = app.listen(port, function () {
 });
 
 
-module.exports = app;
+
+
