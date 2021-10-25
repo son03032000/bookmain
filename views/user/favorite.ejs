@@ -28,6 +28,7 @@
             <thead class="thead-inverse">
               <tr>
                 <th>Tên Sách</th>
+                <th>Ảnh</th>
                 <th></th>
               </tr>
             </thead>
@@ -36,6 +37,8 @@
                 <tr>
                   
                 <td><a href="/books/details/<%=book.book_info.id%>" style="color: black; font-size: 20px;"><%=book.book_info.title%></a></td>
+                <td><img src="<%=book.book_info.ImageUrl%>" style = "width: 100px;height: 100px;" alt=""></td>
+                
                 <td>
                   <form action="/books/<%=book.book_info.id%>/dislike" method="POST" class="d-inline">
                    <input class="btn btn-secondary" type="submit" value="Xóa khỏi mục ưa thích">

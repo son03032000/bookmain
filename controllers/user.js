@@ -313,6 +313,7 @@ exports.postLikeBook = async(req, res, next) => {
           book_info: {
               id: book._id,
               title: book.title,
+              ImageUrl: book.ImageUrl,           
           },
           user_id: {
               id: user._id,

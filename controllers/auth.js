@@ -86,7 +86,7 @@ exports.postUserSignUp = async (req, res, next) => {
       address: req.body.address,
     });
 
-    await User.register(newUser, req.body.password);
+    await User.register(newUser,req.body.password);
     await passport.authenticate("local")(req, res, () => {
       res.redirect("/user/1");
     });

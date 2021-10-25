@@ -12,4 +12,5 @@ router.get('/books/details/:book_id',middleware.isLoggedIn, book_controller.book
 
 
 
+
 module.exports = router;

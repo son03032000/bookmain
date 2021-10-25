@@ -23,6 +23,7 @@ exports.book_list = async (req, res, next) => {
       .populate("likes");
     // Lấy tổng số sách có sẵn của bộ lọc nhất định
     const count = await Book.find(searchoObj).countDocuments();
+    
 
     res.render("books", {
       books: books,
@@ -95,3 +96,4 @@ exports.book_detail = async (req, res, next) => {
     return res.redirect("back");
   }
 };
+

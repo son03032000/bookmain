@@ -7,6 +7,8 @@ const likeSchema = new mongoose.Schema({
            ref : 'Book', 
        },
        title : String,
+       ImageUrl: String,
+       
    },
    user_id : {
        id : {
