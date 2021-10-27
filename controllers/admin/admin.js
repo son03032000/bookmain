@@ -109,8 +109,9 @@ exports.getAdminAuthorInventory = async (req, res, next) => {
     if (filter !== "all" && value !== "all") {
       searchObj[filter] = value;
     }
+
     const authors_count = await Author.find(searchObj).countDocuments();
-    
+
     const authors = await Author.find(searchObj)
       .skip(PER_PAGE * page - PER_PAGE)
       .limit(PER_PAGE);

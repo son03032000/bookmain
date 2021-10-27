@@ -10,7 +10,7 @@ session = require("express-session"),
  sanitizer = require("express-sanitizer"),
  methodOverride = require("method-override"),
 
- User  = require("./models/user")
+User  = require("./models/user")
 var UserRouter = require("./routes/user");
 var authRoutes = require("./routes/auth");
 var admin = require("./routes/admin");
@@ -39,8 +39,9 @@ app.use(sanitizer());
 //Set up mongoose connection
 const mongoose = require("mongoose");
 
-//mongoose.connect("mongodb+srv://son03032000:03032000@cluster0.rhe01.mongodb.net/project?retryWrites=true&w=majority", {});
- mongoose.connect("mongodb://localhost/test", {});
+
+mongoose.connect( process.env.DB_URL, {});
+
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));

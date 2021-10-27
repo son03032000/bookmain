@@ -8,7 +8,6 @@ const activitySchema = new mongoose.Schema({
        },
        title : String,
    },
-   
     category : String,
     user_id : {
         id : {

@@ -6,10 +6,12 @@ const Like = require("../models/like")
 const cloudinary = require("cloudinary");
 // Setup Cloudinary
 cloudinary.config({
-  cloud_name: "sstt",
-  api_key: 878854271598434,
-  api_secret: "UyilBk07KLomikO5mafQJdDt-zw",
-});
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_ID,
+  api_secret: process.env.API_SECRET
+})
+if (process.env.NODE_ENV !== "production") require("dotenv").config();
+
 const PER_PAGE = 5;
 
 exports.getUserDashboard = async (req, res, next) => {

@@ -39,35 +39,27 @@ exports.book_list = async (req, res, next) => {
 };
 
 exports.findBooks = async (req, res, next) => {
-  var page = req.params.page || 1;
-  const filter = req.body.filter.toLowerCase();
-  const value = req.body.searChName;
-
-  // hiển thị thông báo flash nếu trường tìm kiếm trống được gửi đến chương trình phụ trợ
-  if (value == "") {
-    req.flash(
-      "error",
-      "Trường tìm kiếm trống. Vui lòng điền vào trường tìm kiếm để nhận được kết quả"
-    );
-    return res.redirect("back");
-  }
-  const searchoObj = {};
-  searchoObj[filter] = value;
-
   try {
-    // Tìm nạp sách từ cơ sở dữ liệu
-    const books = await Book.find(searchoObj)
+    let page = req.params.page || 1;
+    const filter = req.body.filter.toLowerCase();
+    const value = req.body.searchName;
+
+    if (value == "") {
+      return res.redirect("back");
+    }
+    const searchObj = {};
+    searchObj[filter] = value;
+
+    const books_count = await Book.find(searchObj).countDocuments();
+
+    const books = await Book.find(searchObj)
       .skip(PER_PAGE * page - PER_PAGE)
-      .limit(PER_PAGE)
-      .populate("author");
-    // Lấy tổng số sách có sẵn của bộ lọc nhất định
-    const count = await Book.find(searchoObj).countDocuments();
+      .limit(PER_PAGE);
 
     res.render("books", {
-      title: "Book List",
       books: books,
       current: page,
-      pages: Math.ceil(count / PER_PAGE),
+      pages: Math.ceil(books_count / PER_PAGE),
       filter: filter,
       value: value,
       user: req.user,

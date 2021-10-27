@@ -6,10 +6,12 @@ var async = require("async");
 var { body, validationResult } = require("express-validator/check");
 // Setup Cloudinary
 cloudinary.config({
-  cloud_name: "sstt",
-  api_key: 878854271598434,
-  api_secret: "UyilBk07KLomikO5mafQJdDt-zw",
-});
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_ID,
+  api_secret: process.env.API_SECRET
+})
+if (process.env.NODE_ENV !== "production") require("dotenv").config();
+
 
 // Hiển thị biểu mẫu tạo sách trên GET
 exports.book_create_get = function (req, res, next) {
