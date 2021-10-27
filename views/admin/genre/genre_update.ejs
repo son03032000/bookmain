@@ -22,8 +22,8 @@
                       <input type="text" class="form-control" id="name" name="name" placeholder="Fantasy, Poetry etc." value="<%= (undefined===genre ? '' :  genre.name)%>" required="true">
                     </div>
                     <div class="form-group">
-                      <label class="form-control-label" for="describe">Author describe</label>
-                      <input type="textarea" id="describe" class="form-control" placeholder="describe" required="true" name="describe" value="<%= genre.describe %>">
+                      <label class="form-control-label">Genre describe</label>
+                      <textarea name="describe" cols="30" rows="10" class="form-control" id="describe"><%=genre.describe%></textarea>
                     </div>
                   <button type="submit" class="btn btn-primary btn-block">Update Genre</button>
                 </form>
@@ -35,6 +35,9 @@
 
 <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
 
+<script>
+  CKEDITOR.replace( 'describe' );
+</script>
 
 
   
