@@ -10,16 +10,6 @@ const authController = require('../controllers/auth');
 
 router.get('/',authController.getHome)
 //landing page
-router.get('/login', authController.getLandingPage);
-
-//admin login handler
-router.get("/auth/admin-login", authController.getAdminLoginPage)
-
-router.post("/auth/admin-login", passport.authenticate("local", {
-        successRedirect : "/admin",
-        failureRedirect : "/auth/admin-login",
-    }), (req, res)=> {
-});
 
 //admin logout handler
 router.get("/auth/admin-logout", authController.getAdminLogout);
@@ -33,11 +23,17 @@ router.post("/auth/admin-signup", authController.postAdminSignUp);
 //user login handler
 router.get("/auth/user-login", authController.getUserLoginPage);
 
-router.post("/auth/user-login", passport.authenticate("local", {
-        successRedirect : "/user/1",
-        failureRedirect : "/auth/user-login",
-    }),  (req, res)=> {
-});
+
+router.post('/auth/user-login',passport.authenticate('local', {
+          failureRedirect: '/auth/user-login'
+        }), (req, res) => {
+          if (req.user.isAdmin === true) {
+            res.redirect('/admin');
+          }
+          if (req.user.isAdmin === false) {
+            res.redirect('/user/1');
+          }
+        });
 
 //user -> user logout handler
 router.get("/auth/user-logout", authController.getUserLogout);

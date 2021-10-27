@@ -1,5 +1,5 @@
-const multer = require("multer");
-
+const AccountModel = require("../models/user")
+var jwt = require('jsonwebtoken');
 const middleware = {};
 
 middleware.isLoggedIn = function(req, res, next) {
@@ -7,7 +7,7 @@ middleware.isLoggedIn = function(req, res, next) {
         return next();
     }
     req.flash("error", "You need to be logged in first");
-    res.redirect("/");
+    res.redirect("/auth/user-login");
 };
 
 middleware.isAdmin = function(req, res, next) {
@@ -18,10 +18,5 @@ middleware.isAdmin = function(req, res, next) {
     res.redirect("/");
 };
 
-middleware.upload = multer({
-      limits: {
-        fileSize: 4 * 1024 * 1024,
-      }
-    });
 
 module.exports = middleware;

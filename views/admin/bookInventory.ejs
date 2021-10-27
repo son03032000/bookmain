@@ -54,6 +54,7 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Genre</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody>       
@@ -61,7 +62,8 @@
               <tr>
                 <td><%= book.title %></td>
                 <td><%= book.author.name %> </td>
-                <td><%= book.genre[0].name %></td>>
+                <td><%= book.genre[0].name %></td>
+                <td><%= book.Ngaykhoitao %></td>
                 <td>
                     <span>
                         <a href="/admin/book/update/<%=book._id%>" class="btn btn-info btn-sm">Update</a>

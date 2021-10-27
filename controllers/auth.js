@@ -1,6 +1,9 @@
 // importing libraries
 const passport = require("passport");
 const cloudinary = require("cloudinary");
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcrypt");
+
 // Setup Cloudinary
 cloudinary.config({
   cloud_name: "sstt",
@@ -13,13 +16,6 @@ if (process.env.NODE_ENV !== "production") require("dotenv").config();
 const User = require("../models/user");
 exports.getHome = (req, res, next) => {
   res.render("home");
-};
-exports.getLandingPage = (req, res, next) => {
-  res.render("landing");
-};
-
-exports.getAdminLoginPage = (req, res, next) => {
-  res.render("admin/adminLogin");
 };
 
 exports.getAdminLogout = (req, res, next) => {
@@ -81,6 +77,7 @@ exports.postUserSignUp = async (req, res, next) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       username: req.body.username,
+      password: bcrypt.hashSync(req.body.password, 8),
       email: req.body.email,
       gender: req.body.gender,
       address: req.body.address,

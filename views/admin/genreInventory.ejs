@@ -52,6 +52,7 @@
             <thead class="thead-inverse">
               <tr>
                 <th>Name</th>
+                <th>date added</th>
                 
               </tr>
             </thead>
@@ -59,9 +60,10 @@
               <% for (let genre of genres) { %>
               <tr>
                 <td><%= genre.name %> </td>
+                <td><%= genre.Ngaykhoitao %></td>
                 <td>
                     <span>
-                        <a href="/admin/genre/update/<%=genre._id%>" class="btn btn-info btn-sm" style="margin-left: 20cm;">Update</a>
+                        <a href="/admin/genre/update/<%=genre._id%>" class="btn btn-info btn-sm" >Update</a>
                         <a href="/admin/genre/delete/<%=genre._id%>" class="btn btn-sm btn-danger">Delete</a>
                     </span> 
                 </td>

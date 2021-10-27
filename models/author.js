@@ -10,6 +10,7 @@ var AuthorSchema = new Schema({
   date_of_death: { type: Date },
   describe:{ type: String, required: true },
   ImageUrl: { type: String, required: true },
+  AuthorDate : {type : Date, default : Date.now()},
 });
 
 //Virtual for author's full name
@@ -21,7 +22,9 @@ AuthorSchema.virtual("name").get(function () {
 AuthorSchema.virtual("url").get(function () {
   return "/catalog/author/" + this._id;
 });
-
+AuthorSchema.virtual("Ngaykhoitao").get(function () {
+  return moment(this.AuthorDate).format("MMMM Do, YYYY");
+});
 AuthorSchema.virtual("author_DOB_formatted").get(function () {
   return moment(this.date_of_birth).format("MMMM Do, YYYY");
 });
