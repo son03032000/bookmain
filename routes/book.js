@@ -8,7 +8,7 @@ router.get('/books/:filter/:value/:page', book_controller.book_list);
 
 router.post('/books/:filter/:value/:page', book_controller.findBooks)
 /* GET request for one Book. */
-router.get('/books/details/:book_id',middleware.isLoggedIn, book_controller.book_detail);
+router.get('/books/details/:book_id', book_controller.book_detail);
 
 
 

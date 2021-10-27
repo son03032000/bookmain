@@ -8,6 +8,6 @@ router.get('/authors/:filter/:value/:page', author_controller.author_list);
 
 router.post('/authors/:filter/:value/:page', author_controller.findAuthors)
 /* GET request for one Author. */
-router.get('/authors/details/:author_id',middleware.isLoggedIn, author_controller.author_detail);
+router.get('/authors/details/:author_id', author_controller.author_detail);
 
 module.exports = router;
