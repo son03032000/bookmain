@@ -158,12 +158,7 @@ exports.author_update_post = [
     .withMessage("Family name must be specified.")
     .isAlphanumeric()
     .withMessage("Family name has non-alphanumeric characters."),
-  body("date_of_birth", "Invalid date of birth")
-    .optional({ checkFalsy: true })
-    .isISO8601(),
-  body("date_of_death", "Invalid date of death")
-    .optional({ checkFalsy: true })
-    .isISO8601(),
+
 
   async (req, res, next) => {
     const result = await cloudinary.v2.uploader.upload(req.file.path);
