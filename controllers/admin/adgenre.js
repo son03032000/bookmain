@@ -8,9 +8,9 @@ exports.genre_create_get = function (req, res, next) {
 };
 
 exports.genre_create_post = function (req, res, next) {
+  try {
   req.checkBody("name", "Genre name required").notEmpty();
   var errors = req.validationErrors();
-
   var genre = new Genre({ name: req.body.name,describe: req.body.describe, });
 
   if (errors) {
@@ -33,6 +33,10 @@ exports.genre_create_post = function (req, res, next) {
           res.redirect("/genres/all/all/1");
       }
     });
+  }
+  } catch (err) {
+    console.log(err);
+    res.redirect("back");
   }
 };
 // Display Genre delete form on GET

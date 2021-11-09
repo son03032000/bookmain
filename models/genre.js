@@ -9,7 +9,7 @@ var GenreSchema = new Schema({
 });
 
 GenreSchema.virtual("url").get(function () {
-  return "/catalog/genre/" + this._id;
+  return "/genres/details/" + this._id;
 });
 GenreSchema.virtual("Ngaykhoitao").get(function () {
   return moment(this.GenreDate).format("MMMM Do, YYYY");

@@ -20,7 +20,7 @@ AuthorSchema.virtual("name").get(function () {
 
 //Virtual for author's url
 AuthorSchema.virtual("url").get(function () {
-  return "/catalog/author/" + this._id;
+  return "/authors/details/" + this._id;
 });
 AuthorSchema.virtual("Ngaykhoitao").get(function () {
   return moment(this.AuthorDate).format("MMMM Do, YYYY");
