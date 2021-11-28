@@ -35,7 +35,7 @@ router.get("/users/activities/:user_id",middleware.isLoggedIn,user_controller.ge
 router.post("/users/activities/:user_id",middleware.isLoggedIn,user_controller.postShowActivitiesByCategory)
 
 
-//user -> issue a book
+
 router.post("/books/:book_id/like/:user_id", middleware.isLoggedIn, user_controller.postLikeBook);
 
 //user -> show favorite

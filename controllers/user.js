@@ -164,7 +164,6 @@ exports.postNewComment = async (req, res, next) => {
     const comment_text = req.body.comment;
     const user_id = req.user._id;
     const username = req.user.username;
-
     // tìm nạp sách được nhận xét bằng id
     const book_id = req.params.book_id;
     const book = await Book.findById(book_id);
@@ -184,21 +183,13 @@ exports.postNewComment = async (req, res, next) => {
     // đẩy id nhận xét vào sách
     book.comments.push(comment._id);
     await book.save();
-
     // logging the activity
     const activity = new Activity({
-      info: {
-        id: book._id,
-        title: book.title,
-      },
+      info: {id: book._id,title: book.title},
       category: "Comment",
-      user_id: {
-        id: user_id,
-        username: username,
-      },
+      user_id: {id: user_id,username: username},
     });
     await activity.save();
-
     res.redirect("/books/details/" + book_id);
   } catch (err) {
     console.log(err);
@@ -309,7 +300,6 @@ exports.postLikeBook = async(req, res, next) => {
   try {
       const book = await Book.findById(req.params.book_id);
       const user = await User.findById(req.params.user_id);
-
       // registering like
       const like =  new Like({
           book_info: {
@@ -322,11 +312,8 @@ exports.postLikeBook = async(req, res, next) => {
               username: user.username,
           }
       });
-
       // putting like record on individual user document
-      user.bookLikeInfo.push(book._id);
-
-     
+      user.bookLikeInfo.push(book._id);  
       // await ensure to synchronously save all database alteration
       await like.save();
       await user.save();
@@ -338,7 +325,6 @@ exports.postLikeBook = async(req, res, next) => {
   }
 }
 
-// user -> show return-renew page
 exports.getShowFavorite = async(req, res, next) => {
   const user_id = req.user._id;
   try {

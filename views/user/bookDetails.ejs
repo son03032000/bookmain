@@ -129,15 +129,13 @@
             
                     <button id="edit" class="btn btn-primary px-1 py-0">
                         <i class="fa fa-pencil"></i>
-                    </button>
-                        
+                    </button>            
                     <form class="d-inline" action="/books/details/<%=book._id%>/<%=comment._id%>?_method=DELETE" method="POST">
                         <button class="btn btn-sm btn-danger px-1 py-0">
                             <i class="fa fa-trash"></i>
                         </button>
                     </form>
              <% } %>
-                    
                     <div class="d-none" id="editCommentBox">
                      <form action="/books/details/<%=book._id%>/<%=comment._id%>" method="POST">
                         <textarea name="comment[text]" class="form-control"><%-comment.text%></textarea>

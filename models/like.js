@@ -7,8 +7,7 @@ const likeSchema = new mongoose.Schema({
            ref : 'Book', 
        },
        title : String,
-       ImageUrl: String,
-       
+       ImageUrl: String, 
    },
    user_id : {
        id : {
@@ -18,6 +17,5 @@ const likeSchema = new mongoose.Schema({
        username : String,
    },
 });
-
 
 module.exports = mongoose.model("Like", likeSchema);
