@@ -39,9 +39,7 @@ app.use(sanitizer());
 //Set up mongoose connection
 const mongoose = require("mongoose");
 
-
 mongoose.connect( process.env.DB_URL, {});
-
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
@@ -81,9 +79,6 @@ app.use("/admin", admin);
 app.use(book);
 app.use(author);
 app.use(genre);
-
-
-
 
 const port = process.env.PORT || 3000;
 server = app.listen(port, function () {
