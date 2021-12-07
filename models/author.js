@@ -8,6 +8,7 @@ var AuthorSchema = new Schema({
   last_name: { type: String, require: true, max: 100 },
   date_of_birth: { type: Date },
   date_of_death: { type: Date, default: "còn sống" },
+  summary: { type: String, required: true },
   describe:{ type: String, required: true },
   ImageUrl: { type: String, required: true },
   AuthorDate : {type : Date, default : Date.now()},

@@ -32,6 +32,7 @@ exports.author_create_post = async (req, res) => {
     last_name: req.body.last_name,
     date_of_birth: req.body.date_of_birth,
     date_of_death: req.body.date_of_death,
+    summary: req.body.summary,
     describe: req.body.describe,
     ImageUrl: result.secure_url,
   });
@@ -167,13 +168,24 @@ exports.author_update_post = [
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
       date_of_death: req.body.date_of_death,
+      summary: req.body.summary,
       describe: req.body.describe,
       ImageUrl: result.secure_url,
       _id: req.params.author_id,
-    });
-    // Data from form is valid. Update the record.
-    Author.findByIdAndUpdate(req.params.author_id, author);
-    // Successful - redirect to genre detail page.
-    res.redirect("/admin/authorInventory/all/all/1");
+    }); 
+ 
+    // Dữ liệu từ biểu mẫu là hợp lệ. Cập nhật hồ sơ.
+    Author.findByIdAndUpdate(
+      req.params.author_id,
+      author,
+      {},
+      function (err, theauthor) {
+        if (err) {
+          return next(err);
+        }
+        // Thành công - chuyển hướng đến trang chi tiết sách.
+        res.redirect("/admin/authorInventory/all/all/1");
+      }
+    );    
   },
 ];
